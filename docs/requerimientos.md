@@ -21,6 +21,12 @@
 |---|---|---|---|
 | RF-016 | Filtrar el muro por tag | Alta | Pendiente |
 
+### Módulo Tags
+
+| ID | Descripción | Prioridad | Estado |
+|---|---|---|---|
+| RF-017 | Seguir un tag | Media | Pendiente |
+
 #### Criterios de aceptación
 
 ### RF-006
@@ -90,6 +96,17 @@
 ### Seguidores
 ### Anuncios
 
+### RF-017 - Seguir un tag
+
+#### Criterio 1
+* **Dado** que el usuario se encuentra visualizando una etiqueta (tag) específica en el sistema,
+* **Cuando** haga clic en el botón de "Seguir",
+* **Entonces** el sistema deberá registrar la suscripción y empezar a mostrar las publicaciones con este tag en su feed personalizado.
+
+#### Criterio 2
+* **Dado** que el usuario ya sigue una etiqueta específica,
+* **Cuando** decida hacer clic en el botón de "Dejar de seguir",
+* **Entonces** el sistema deberá remover la etiqueta de sus suscripciones y dejar de priorizar esas publicaciones en su feed.
 ### RF-016 - Filtrar el muro por tag
 
 #### Criterio 1
