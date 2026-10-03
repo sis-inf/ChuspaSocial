@@ -12,13 +12,13 @@ Botón **Fork** en la esquina superior derecha de GitHub.
 
 ### 2. Clona tu fork
 ```bash
-git clone https://github.com/TU-USUARIO/PROYECTO.git
-cd PROYECTO
+git clone https://github.com/TU-USUARIO/ChuspaSocial.git
+cd ChuspaSocial
 ```
 
 ### 3. Agrega el repo original como upstream
 ```bash
-git remote add upstream https://github.com/sis-inf/PROYECTO.git
+git remote add upstream https://github.com/sis-inf/ChuspaSocial.git
 ```
 
 ### 4. Sincroniza antes de trabajar
@@ -53,8 +53,8 @@ git push origin tipo/descripcion-corta
 ```
 
 ### 8. Abre un Pull Request
-- Base: `sis-inf/PROYECTO` → rama `dev`
-- Compare: `TU-USUARIO/PROYECTO` → tu rama
+- Base: `sis-inf/ChuspaSocial` → rama `dev`
+- Compare: `TU-USUARIO/ChuspaSocial` → tu rama
 
 ---
 
