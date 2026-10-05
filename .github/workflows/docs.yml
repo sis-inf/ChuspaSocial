@@ -1,0 +1,27 @@
+name: Check Documentation Links
+
+on:
+  push:
+    branches: [ dev ]
+    paths:
+      - 'README.md'
+      - 'docs/**'
+  pull_request:
+    branches: [ dev ]
+    paths:
+      - 'README.md'
+      - 'docs/**'
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --fail --verbose README.md "docs/**/*.md"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
