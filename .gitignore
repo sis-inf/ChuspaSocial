@@ -41,6 +41,10 @@ coverage/
 .coverage
 htmlcov/
 
+# Moodle: evitar versionar datos locales y la caché de PHPUnit.
+moodledata/
+.phpunit.result.cache
+
 # Datos sensibles
 *.pem
 *.key

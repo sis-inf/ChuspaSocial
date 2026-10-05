@@ -9,16 +9,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Verificar descripción del PR
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          if [ -z "${{ github.event.pull_request.body }}" ]; then
+          if [ -z "$PR_BODY" ]; then
             echo "El PR debe tener descripción"
             exit 1
           fi
           echo "✅ PR tiene descripción"
 
       - name: Verificar que referencia un issue
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          if ! echo "${{ github.event.pull_request.body }}" | grep -qi "closes #\|fixes #\|refs #"; then
+          if ! printf '%s\n' "$PR_BODY" | grep -qi "closes #\|fixes #\|refs #"; then
             echo "El PR debe referenciar un issue con 'Closes #N'"
             exit 1
           fi

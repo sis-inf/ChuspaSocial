@@ -34,12 +34,12 @@ git checkout -b tipo/descripcion-corta
 
 Ejemplos de nombres de rama:
 
-feat/endpoint-metricas-cpu
-docs/readme-instalacion
-fix/calculo-ram-incorrecto
-test/pruebas-unitarias-cpu
-chore/configurar-github-actions
-security/analisis-dependencias
+feat/post-service-create
+docs/rf-012-comentarios
+fix/orden-comentarios
+test/post-service-create
+chore/configurar-phpcs-moodle
+security/validar-capabilities-publicaciones
 
 ### 6. Trabaja y haz commits pequeños
 ```bash
@@ -73,11 +73,11 @@ git push origin tipo/descripcion-corta
 
 ### Ejemplos
 
-feat: agregar endpoint /metrics para CPU
-fix: corregir cálculo de porcentaje de RAM
-docs: agregar guía de instalación en Windows
-test: agregar pruebas unitarias para módulo de disco
-chore: configurar GitHub Actions para CI
+feat: agregar creación de publicaciones en el muro
+fix: corregir orden cronológico de comentarios
+docs: documentar RF-012 para ver comentarios de una publicación
+test: agregar pruebas para la creación de publicaciones
+chore: configurar phpcs con el estándar de Moodle
 
 ---
 

@@ -9,6 +9,17 @@ Si encuentras una vulnerabilidad de seguridad:
 3. Incluye descripción detallada del problema
 4. Espera confirmación antes de divulgar
 
+## Qué se considera una vulnerabilidad
+
+En ChuspaSocial se considera una vulnerabilidad cualquier fallo que permita comprometer la seguridad, privacidad o acceso autorizado a la información de los usuarios.
+
+Algunos ejemplos son:
+
+- Acceder o visualizar publicaciones de materias en las que el usuario no está inscrito.
+- Ejecutar código malicioso mediante ataques XSS (Cross-Site Scripting).
+- Realizar acciones no autorizadas mediante ataques CSRF (Cross-Site Request Forgery).
+- Acceder, descargar o visualizar archivos privados sin los permisos correspondientes.
+
 ## Análisis de seguridad
 
 Este proyecto ejecuta análisis automático de seguridad
