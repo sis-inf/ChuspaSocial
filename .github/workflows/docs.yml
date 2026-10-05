@@ -22,6 +22,7 @@ jobs:
       - name: Check Links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --fail --verbose README.md "docs/**/*.md"
+          args: --verbose README.md "docs/**/*.md"
+          fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
