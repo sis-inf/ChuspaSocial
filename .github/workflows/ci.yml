@@ -52,3 +52,8 @@ jobs:
             exit 1
           fi
           echo "✅ PR tiene un título válido"
+
+      - name: Ejecutar PHPLint
+        uses: overtrue/phplint-action@v1
+        with:
+          path: src
