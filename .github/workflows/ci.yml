@@ -52,3 +52,7 @@ jobs:
             exit 1
           fi
           echo "✅ PR tiene un título válido"
+
+      - name: Ejecutar phpcs
+        if: ${{ !cancelled() }}
+        run: moodle-plugin-ci phpcs --max-warnings 0
