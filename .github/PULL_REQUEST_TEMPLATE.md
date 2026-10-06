@@ -19,6 +19,9 @@ Closes #
 - [ ] Actualicé la documentación correspondiente
 - [ ] Mis cambios no rompen funcionalidad existente
 - [ ] Agregué tests si corresponde
+- [ ] Toca un solo archivo
+- [ ] No modifica `version.php`
+- [ ] `phpcs` pasa sin warnings
 
 ## Cómo probar
 Pasos para que el revisor verifique el cambio. Ejemplo:

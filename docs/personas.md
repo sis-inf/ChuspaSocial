@@ -43,3 +43,21 @@
 - No contar con un espacio centralizado para comunicarse con los estudiantes.
 
 **Cómo usa ChuspaSocial:** Publica anuncios y novedades en el muro de sus materias para mantener informados a los estudiantes. También consulta las publicaciones que comparten los estudiantes relacionadas con sus cursos.
+
+## Vendedor de libros
+
+**Nombre:** Carlos Mendoza
+
+**Rol:** Estudiante de últimos semestres
+
+**Contexto:** Está cursando los últimos semestres de su carrera y acumula libros e insumos académicos de materias que ya aprobó y no volverá a cursar.
+
+**Objetivos:**
+- Recuperar parte de la inversión realizada en textos académicos de semestres anteriores.
+- Publicar sus libros en una plataforma interna y segura para conectar directamente con estudiantes de semestres inferiores que los necesiten.
+
+**Frustraciones:**
+- Publicar en grupos masivos e informales (Facebook/WhatsApp) donde las publicaciones se pierden rápidamente y hay poca confianza en el trato.
+- Falta de un espacio centralizado dentro de la comunidad universitaria dedicado a la compraventa de material académico.
+
+**Cómo usa ChuspaSocial:** Accede a la sección de Marketplace de libros para publicar sus textos usados (título, precio, estado y materia asociada) y contactar directamente a los compradores interesados dentro de la plataforma.

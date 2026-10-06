@@ -258,10 +258,22 @@
 
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
+| RF-033 | Vincular un libro a una o más materias | Alta | Pendiente |
 | RF-035 | Buscar libros por título o autor | Media | Pendiente |
 
 #### Criterios de aceptación
 
+### RF-033
+
+*Criterio 1*
+- *Dado* un usuario autenticado que está publicando un libro en el Marketplace,
+- *Cuando* selecciona una o más materias existentes para vincularlas al libro,
+- *Entonces* el sistema guarda el libro asociado correctamente a esas materias.
+
+*Criterio 2*
+- *Dado* un usuario que intenta vincular un libro a una materia que no existe en el sistema,
+- *Cuando* confirma la publicación,
+- *Entonces* el sistema rechaza la vinculación y muestra un mensaje indicando que solo puede seleccionar materias existentes.
 ### RF-035
 
 **Criterio 1**
@@ -539,6 +551,27 @@
 - **Entonces** el sistema actualiza el estado de su reacción sin crear registros duplicados.
 
 ### Seguidores
+
+| ID | Descripción | Prioridad | Estado |
+|---|---|---|---|
+| RF-018 | Seguir a un usuario | Media | Pendiente |
+
+#### Criterios de aceptación
+
+### RF-018
+
+**Criterio 1**
+
+- **Dado** un usuario autenticado que visita el perfil social de otro usuario,
+- **Cuando** presiona el botón "Seguir",
+- **Entonces** el sistema registra que el usuario está siguiendo a ese perfil.
+
+**Criterio 2**
+
+- **Dado** un usuario que ya sigue a otro usuario,
+- **Cuando** consulta el perfil social de ese usuario,
+- **Entonces** el sistema muestra que ya lo está siguiendo y no permite crear un seguimiento duplicado.
+
 ### Anuncios
 
 ### RF-016 - Filtrar el muro por tag
@@ -716,11 +749,25 @@
 
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
+| RF-034 | Ver los libros de mis materias | Alta | Pendiente |
 | RF-035 | Buscar libros por título o autor | Media | Pendiente |
+| RF-036 | Contactar al vendedor por la mensajería de Moodle | Alta | Pendiente |
+| RF-038 | Marcar un libro como vendido | Media | Pendiente |
 | RF-039 | Editar o eliminar un anuncio propio | Media | Pendiente |
 
 #### Criterios de aceptación
 
+### RF-034
+
+*Criterio 1*
+- *Dado* un usuario autenticado que está inscrito en una o más materias,
+- *Cuando* accede a la sección de Marketplace,
+- *Entonces* el sistema muestra únicamente los anuncios de libros vinculados a las materias en las que está inscrito.
+
+*Criterio 2*
+- *Dado* un usuario que no está inscrito en ninguna materia con libros publicados en el Marketplace,
+- *Cuando* accede a esa sección,
+- *Entonces* el sistema muestra un mensaje indicando que no hay libros disponibles para sus materias.
 ### RF-035
 
 **Criterio 1**
@@ -732,6 +779,33 @@
 - **Dado** que el usuario se encuentra en el buscador del Marketplace,
 - **Cuando** ingresa el nombre de un autor en el campo de texto,
 - **Entonces** el sistema debe mostrar una lista con todos los libros registrados bajo ese autor.
+
+### RF-036
+
+*Criterio 1*
+- *Dado* un usuario autenticado que visualiza un anuncio publicado por otro usuario en el Marketplace,
+- *Cuando* presiona el botón "Contactar",
+- *Entonces* el sistema abre una conversación con el vendedor mediante la mensajería de Moodle.
+
+*Criterio 2*
+- *Dado* un usuario que ya inició una conversación con el vendedor desde el botón "Contactar",
+- *Cuando* envía un mensaje dentro de esa conversación,
+- *Entonces* el vendedor recibe el mensaje en su bandeja de mensajería de Moodle.
+
+### RF-038
+
+**Criterio 1**
+
+- **Dado** un vendedor autenticado que tiene un anuncio propio publicado en el Marketplace,
+- **Cuando** marca el libro como vendido,
+- **Entonces** el sistema actualiza el estado del anuncio y deja de mostrarlo entre los libros disponibles.
+
+**Criterio 2**
+
+- **Dado** un libro que fue marcado como vendido,
+- **Cuando** un usuario consulta los libros disponibles en el Marketplace,
+- **Entonces** el libro vendido no aparece entre los resultados disponibles.
+
 ### RF-039
 
 **Criterio 1**
@@ -772,10 +846,13 @@
 | RNF-002 | El plugin debe instalarse y ejecutarse sin errores en PHP 8.1, 8.2 y 8.3. Verificación: ejecutar la suite PHPUnit y moodle-plugin-ci sobre las tres versiones de PHP en el CI, que debe pasar sin fallos. | Compatibilidad | Pendiente |
 | RNF-004 | El muro debe cargar y mostrar 50 publicaciones en menos de 2 segundos. Verificación: medir el tiempo de carga en una prueba con 50 publicaciones y comprobar que sea menor a 2 segundos. | Rendimiento | Pendiente |
 | RNF-003 | El plugin debe funcionar sin errores con MariaDB, MySQL y PostgreSQL compatibles con Moodle 4.5 LTS. Verificación: ejecutar la suite PHPUnit y moodle-plugin-ci usando cada motor de base de datos y comprobar que todas las pruebas finalicen sin fallos. | Compatibilidad | Pendiente |
+| RNF-012 | Las clases del plugin en `classes/` deben alcanzar al menos 70 % de cobertura de líneas con PHPUnit. Verificación: ejecutar PHPUnit con reporte de cobertura y comprobar que la cobertura de `classes/` sea igual o superior al 70 %. | Mantenibilidad | Pendiente |
+| RNF-011 | El código PHP del plugin debe cumplir el estándar de codificación de Moodle sin errores ni warnings de PHPCS. Verificación: ejecutar PHPCS con el estándar Moodle sobre el plugin y comprobar 0 errores y 0 warnings. | Mantenibilidad | Pendiente |
+| RNF-010 | La interfaz del plugin debe funcionar correctamente en las dos últimas versiones estables de Chrome, Firefox, Edge y Safari. Verificación: ejecutar los casos de prueba manuales de interfaz en las 8 combinaciones de navegador y versión y comprobar que todos finalicen sin fallos. | Compatibilidad | Pendiente |
 
 
 ## Requerimientos de Sistema
 
 | ID | Descripción |
 |---|---|
-| RS-001 | |
+| RS-001 | El cron de Moodle debe estar activo y ejecutarse periódicamente para procesar las notificaciones y tareas programadas de ChuspaSocial. Si no se cumple, estas funciones pueden retrasarse o no ejecutarse. |

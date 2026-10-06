@@ -7,6 +7,7 @@
 | Capacidad (capability) | Permiso de Moodle que determina qué acciones puede realizar un rol dentro del sitio. |
 | Feed personalizado | Muro filtrado que reúne las publicaciones de los usuarios y las etiquetas que sigue cada persona. |
 | Muro | Página donde se muestran publicaciones, anuncios y actividad general de una materia. |
+| Plugin local | Tipo de plugin de Moodle (local_) que agrega funcionalidad propia al sitio. |
 | Publicación | Mensaje de texto, con imágenes opcionales, que un usuario comparte en el muro. |
 | Marketplace | Sección para publicar y buscar anuncios de libros entre miembros de la institución. |
 | Reacción | Indicador de aprobación que un usuario puede dar a una publicación. |
