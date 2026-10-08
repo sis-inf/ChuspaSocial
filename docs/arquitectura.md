@@ -1,14 +1,6 @@
 # Arquitectura del Sistema
 
 ## Visión general
-<<<<<<< HEAD
-El plugin `local_chuspasocial` para Moodle 4.5 implementa una arquitectura modular por capas enfocada en la mantenibilidad, escalabilidad y la integración nativa con el core de Moodle.
-
-## Descripciones de capas y componentes
-
-### 1. Servicios Internos (`classes/local/`)
-Encapsulan las reglas de negocio, validaciones del sistema y lógica de dominio del plugin. Aíslan los controladores HTTP y las API externas de la manipulación directa de datos.
-=======
 `local_chuspasocial` es un plugin local para Moodle que extiende la plataforma con funcionalidades sociales mediante páginas propias como `view.php`, servicios internos en `classes/local/` para la lógica de negocio y funciones externas en `classes/external/` que exponen endpoints seguros para la interacción asíncrona vía AJAX.
 El plugin `local_chuspasocial` para Moodle 4.5 implementa una arquitectura modular por capas enfocada en la mantenibilidad, escalabilidad y la integración nativa con el core de Moodle.
 
@@ -43,7 +35,6 @@ El plugin `local_chuspasocial` para Moodle 4.5 adopta una arquitectura por capas
 |        ($DB)           |   |  (\local_chuspasocial\..) |
 +------------------------+   +--------------------------+
 ```
->>>>>>> upstream/dev
 
 ### 2. Clases Persistent (`classes/persistent.php` / `classes/local/persistent/`)
 Representan las entidades de datos y la capa de abstracción sobre la base de datos de Moodle (`$DB`). Gestionan la validación del esquema, las definiciones de campos y el ciclo de vida de los registros persistentes.
@@ -53,15 +44,12 @@ Exponen endpoints y servicios web AJAX compatibles con la External API de Moodle
 
 ### 4. Plantillas Mustache (`templates/`)
 Definen la capa de presentación visual de la interfaz de usuario mediante sintaxis Mustache. Renderizan la estructura HTML de los componentes sociales del plugin de forma desacoplada de la lógica PHP.
-<<<<<<< HEAD
-=======
 | Componente | Tecnología | Versión | Justificación |
 |---|---|---|---|
 | **LMS Base** | Moodle | 4.5+ | Plataforma educativa principal sobre la cual se despliega el plugin local. |
 | **Backend** | PHP | 8.1+ | Lenguaje nativo de desarrollo para la API y controladores de Moodle. |
 | **Base de Datos** | MariaDB / PostgreSQL | 10.6+ / 13+ | Motores relacionales compatibles con la capa de abstracción `$DB` de Moodle. |
 | **Frontend** | Mustache / JS (AMD/ES6) | Native | Motor de plantillas y clientes de script nativos de Moodle para UI dinámica. |
->>>>>>> upstream/dev
 
 ### 5. Módulos AMD (`amd/src/`)
 Implementan la lógica del lado del cliente utilizando JavaScript (AMD/ES6). Gestionan las interacciones dinámicas del usuario, la manipulación del DOM y las llamadas asíncronas (AJAX) a las funciones externas de Moodle.
@@ -76,9 +64,6 @@ Implementan la lógica del lado del cliente utilizando JavaScript (AMD/ES6). Ges
 | **Persistencia** | `Persistent` / API `$DB` | Abstracción ORM nativa de Moodle para manejo de tablas. |
 | **API Externa / AJAX** | `classes/external/` | Expone funciones web seguras para interacción asíncrona. |
 | **Interfaz de Usuario** | `templates/*.mustache` | Plantillas Mustache nativas para renderizado limpio. |
-<<<<<<< HEAD
-| **Frontend Dinámico** | `amd/src/*.js` | Módulos AMD/RequireJS para interactividad del cliente. |
-=======
 | **Frontend Dinámico** | `amd/src/*.js` | Módulos AMD/RequireJS para interactividad del cliente. |
 ### Decisión 1
 **Contexto:** Necesidad de desacoplar la lógica de procesamiento de publicaciones de los controladores HTTP directos.  
@@ -116,4 +101,3 @@ sequenceDiagram
 4. Se guarda el registro en la base de datos mediante la API `$DB`.
 5. Se emite el evento `post_created` a través de la Events API de Moodle.
 6. La respuesta se envía formateada a la vista y se renderiza el muro actualizado para el usuario.
->>>>>>> upstream/dev

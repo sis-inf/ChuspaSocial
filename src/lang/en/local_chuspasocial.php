@@ -1,7 +1,4 @@
 <?php
-<<<<<<< HEAD
-$string['pluginname'] = 'ChuspaSocial';
-=======
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -16,4 +13,3 @@ $string['comments'] = 'Comments';
 $string['deletecomment'] = 'Delete comment';
 $string['nocomments'] = 'No comments yet';
 $string['writecomment'] = 'Write a comment...';
->>>>>>> upstream/dev

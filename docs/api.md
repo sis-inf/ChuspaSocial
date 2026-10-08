@@ -2,7 +2,7 @@
 
 ## Base URL
 
-`http://localhost:PUERTO`
+http://localhost:PUERTO
 
 ## Endpoints
 

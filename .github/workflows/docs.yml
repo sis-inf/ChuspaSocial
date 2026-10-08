@@ -6,11 +6,16 @@ on:
     paths:
       - 'README.md'
       - 'docs/**'
+      - '.github/workflows/docs.yml'
   pull_request:
     branches: [ dev ]
     paths:
       - 'README.md'
       - 'docs/**'
+      - '.github/workflows/docs.yml'
+
+permissions:
+  contents: read
 
 jobs:
   link-check:
@@ -22,7 +27,7 @@ jobs:
       - name: Check Links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --verbose --exclude-loopback README.md "docs/**/*.md"
+          args: --verbose --no-progress --exclude-loopback README.md "docs/**/*.md"
           fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

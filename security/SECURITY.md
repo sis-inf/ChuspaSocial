@@ -5,7 +5,7 @@
 Si encuentras una vulnerabilidad de seguridad:
 
 1. **No** crees un issue público
-2. Contacta directamente al mantenedor del proyecto
+2. Repórtala mediante GitHub Private Vulnerability Reporting en `Security` → `Advisories` → `Report a vulnerability`
 3. Incluye descripción detallada del problema
 4. Espera confirmación antes de divulgar
 

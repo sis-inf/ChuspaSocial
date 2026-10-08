@@ -258,11 +258,25 @@
 
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
+| RF-032 | Publicar un anuncio de libro con título, autor, descripción, precio y fotos | Alta | Pendiente |
 | RF-033 | Vincular un libro a una o más materias | Alta | Pendiente |
 | RF-035 | Buscar libros por título o autor | Media | Pendiente |
 
 #### Criterios de aceptación
 
+### RF-032
+
+*Criterio 1*
+
+- *Dado* un usuario autenticado que desea publicar un libro en el Marketplace,
+- *Cuando* completa el título, autor, descripción, precio y agrega fotos del libro,
+- *Entonces* el sistema permite publicar el anuncio del libro correctamente.
+
+*Criterio 2*
+
+- *Dado* un usuario que está publicando un anuncio de libro en el Marketplace,
+- *Cuando* intenta publicar el anuncio sin completar alguno de los datos obligatorios,
+- *Entonces* el sistema rechaza la publicación y muestra un mensaje indicando la información que falta.
 ### RF-033
 
 *Criterio 1*
@@ -448,7 +462,7 @@
 |---|---|---|---|
 | RNF-001 | El plugin debe instalarse y funcionar sin errores en Moodle 4.5 LTS (rama MOODLE_405_STABLE). Verificación: ejecutar la suite PHPUnit y moodle-plugin-ci sobre Moodle 4.5 en el CI, que debe pasar sin fallos. | Compatibilidad | Pendiente |
 | RNF-002 | El plugin debe instalarse y ejecutarse sin errores en PHP 8.1, 8.2 y 8.3. Verificación: ejecutar la suite PHPUnit y moodle-plugin-ci sobre las tres versiones de PHP en el CI, que debe pasar sin fallos. | Compatibilidad | Pendiente |
-
+| RNF-007 | Toda la interfaz del plugin debe estar disponible en inglés (`lang/en`) y en español (`lang/es`), sin claves de texto faltantes en ninguno de los dos idiomas. Verificación: comparar las claves de `lang/en/` y `lang/es/` y comprobar que ambos tengan exactamente las mismas claves (0 faltantes) y que moodle-plugin-ci finalice sin errores. | Internacionalización | Pendiente |
 
 ## Requerimientos de Sistema
 
@@ -551,6 +565,27 @@
 - **Entonces** el sistema actualiza el estado de su reacción sin crear registros duplicados.
 
 ### Seguidores
+
+| ID | Descripción | Prioridad | Estado |
+|---|---|---|---|
+| RF-018 | Seguir a un usuario | Media | Pendiente |
+
+#### Criterios de aceptación
+
+### RF-018
+
+**Criterio 1**
+
+- **Dado** un usuario autenticado que visita el perfil social de otro usuario,
+- **Cuando** presiona el botón "Seguir",
+- **Entonces** el sistema registra que el usuario está siguiendo a ese perfil.
+
+**Criterio 2**
+
+- **Dado** un usuario que ya sigue a otro usuario,
+- **Cuando** consulta el perfil social de ese usuario,
+- **Entonces** el sistema muestra que ya lo está siguiendo y no permite crear un seguimiento duplicado.
+
 ### Anuncios
 
 ### RF-016 - Filtrar el muro por tag
@@ -733,6 +768,7 @@
 | RF-036 | Contactar al vendedor por la mensajería de Moodle | Alta | Pendiente |
 | RF-038 | Marcar un libro como vendido | Media | Pendiente |
 | RF-039 | Editar o eliminar un anuncio propio | Media | Pendiente |
+| RF-040 | Subir fotos del libro | Media | Pendiente |
 
 #### Criterios de aceptación
 
@@ -797,6 +833,18 @@
 - **Cuando** solicita eliminarlo y confirma la acción,
 - **Entonces** el sistema elimina el anuncio y deja de mostrarlo en el Marketplace.
 
+### RF-040
+
+**Criterio 1**
+- **Dado** que el vendedor está publicando o editando un anuncio,
+  **cuando** selecciona fotos del libro y no supera el máximo de N fotos por anuncio,
+  **entonces** el sistema guarda las fotos y las muestra en el detalle del anuncio.
+
+**Criterio 2**
+- **Dado** que el vendedor ya alcanzó el máximo de N fotos por anuncio,
+  **cuando** intenta subir otra foto,
+  **entonces** el sistema rechaza la foto y muestra un mensaje indicando el límite permitido.
+
 ### Notificaciones
 
 | ID | Descripción | Prioridad | Estado |
@@ -834,4 +882,5 @@
 
 | ID | Descripción |
 |---|---|
-| RS-001 | |
+| RS-001 | El cron de Moodle debe estar activo y ejecutarse periódicamente para procesar las notificaciones y tareas programadas de ChuspaSocial. Si no se cumple, estas funciones pueden retrasarse o no ejecutarse. |
+| RS-003 | La funcionalidad de tags de Moodle debe estar habilitada mediante el ajuste `usetags`. Si no se cumple, las funciones de etiquetado y filtrado por tags de ChuspaSocial pueden no estar disponibles o funcionar incorrectamente. |

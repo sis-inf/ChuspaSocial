@@ -22,10 +22,24 @@ git remote add upstream https://github.com/sis-inf/PROYECTO.git
 ```
 
 ### 4. Sincroniza antes de trabajar
+`git fetch upstream` descarga la información más reciente del repositorio original y actualiza las referencias remotas, sin modificar directamente la rama de trabajo.
+
 ```bash
-git checkout dev
-git pull upstream dev
+git fetch upstream
 ```
+
+`git rebase upstream/dev` actualiza la rama de trabajo colocando sus cambios sobre la versión más reciente de la rama `dev` del repositorio original.
+
+```bash
+git rebase upstream/dev
+```
+
+`git push --force-with-lease` actualiza la rama remota después de realizar un `rebase`, evitando sobrescribir cambios remotos que no se hayan recibido previamente.
+
+```bash
+git push --force-with-lease
+```
+
 
 ### 5. Crea tu rama de trabajo
 ```bash
@@ -103,6 +117,15 @@ chore: configurar phpcs con el estándar de Moodle
 | `docs/*` | Documentación |
 | `test/*` | Pruebas |
 | `chore/*` | Configuración |
+
+## Convenciones de nombres de Moodle
+
+Para mantener el código consistente con Moodle, usa estas convenciones:
+
+- **Frankenstyle:** el nombre del componente es `local_chuspasocial`. Úsalo como prefijo cuando Moodle requiera identificar el plugin.
+- **Tablas de base de datos:** sus nombres deben tener como máximo 28 caracteres y mantenerse relacionados con el componente.
+- **Namespaces:** las clases del plugin deben usar el namespace `local_chuspasocial\...` y ubicarse dentro de `classes/` según su responsabilidad.
+- **Claves de strings:** usa identificadores descriptivos en minúsculas y sin espacios, definidos en los archivos de idioma del componente.
 
 ---
 

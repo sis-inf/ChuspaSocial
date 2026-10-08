@@ -2,6 +2,7 @@ name: CI
 
 on:
   pull_request:
+    types: [opened, edited, synchronize, reopened]
     branches: [dev, main]
 
 jobs:
@@ -27,3 +28,27 @@ jobs:
             exit 1
           fi
           echo "✅ PR referencia un issue"
+
+      - name: Verificar título del PR
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          REGEX="^(feat|fix|docs|test|chore|refactor|security|data)(\(.*\))?!?: .+"
+          if [[ ! "$PR_TITLE" =~ $REGEX ]]; then
+            echo "❌ ERROR: El título del PR no cumple con las convenciones del proyecto."
+            echo ""
+            echo "El título debe comenzar con uno de los prefijos permitidos (seguido de ':' y espacio):"
+            echo "  - feat:      (nueva funcionalidad)"
+            echo "  - fix:       (corrección de error)"
+            echo "  - docs:      (documentación)"
+            echo "  - test:      (pruebas)"
+            echo "  - chore:     (configuración o tareas de mantenimiento)"
+            echo "  - refactor:  (mejora de código sin cambio funcional)"
+            echo "  - security:  (seguridad)"
+            echo "  - data:      (análisis de datos)"
+            echo ""
+            echo "Ejemplo válido: chore(ci): agregar validacion de titulo de PR (#370)"
+            echo "Título recibido: '$PR_TITLE'"
+            exit 1
+          fi
+          echo "✅ PR tiene un título válido"
