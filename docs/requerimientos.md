@@ -319,6 +319,28 @@
 - **Cuando** se guarda el comentario,
 - **Entonces** el sistema no envía ninguna notificación.
 
+### Reportes
+
+| ID | Descripción | Prioridad | Estado |
+|---|---|---|---|
+| RF-031 | Ocultar contenido reportado | Alta | Pendiente |
+
+#### Criterios de aceptación
+
+### RF-031
+
+**Criterio 1**
+
+- **Dado** que un contenido ha sido reportado y revisado por un moderador,
+- **Cuando** el moderador decide ocultar el contenido,
+- **Entonces** el sistema deja de mostrar el contenido a los usuarios.
+
+**Criterio 2**
+
+- **Dado** que un contenido se encuentra oculto por un reporte,
+- **Cuando** un usuario intenta visualizar dicho contenido,
+- **Entonces** el sistema no muestra el contenido ocultado.
+
 ## Requerimientos No Funcionales
 
 | ID | Descripción | Categoría | Estado |
