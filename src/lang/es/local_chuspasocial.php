@@ -18,6 +18,8 @@
  * Cadenas de idioma en español para local_chuspasocial.
  *
  * @package    local_chuspasocial
+ * @copyright  2026 sis-inf
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
