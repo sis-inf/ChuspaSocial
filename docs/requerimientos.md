@@ -319,6 +319,32 @@
 - **Cuando** se guarda el comentario,
 - **Entonces** el sistema no envía ninguna notificación.
 
+### Reportes
+
+| ID | Descripción | Prioridad | Estado |
+|---|---|---|---|
+| RF-030 | Revisar la cola de reportes | Alta | Pendiente |
+
+#### Criterios de aceptación
+
+### RF-030
+
+**Criterio 1**
+
+- **Dado** que existen reportes abiertos en el sistema,
+
+- **Cuando** un moderador accede a la cola de reportes,
+
+- **Entonces** el sistema muestra los reportes abiertos pendientes de revisión.
+
+**Criterio 2**
+
+- **Dado** que un moderador visualiza la cola de reportes,
+
+- **Cuando** selecciona un reporte,
+
+- **Entonces** el sistema muestra la información del reporte para que pueda revisarlo.
+
 ## Requerimientos No Funcionales
 
 | ID | Descripción | Categoría | Estado |
