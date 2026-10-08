@@ -15,7 +15,7 @@
 // along with Moodle. If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Cadenas de idioma en ingles para local_chuspasocial.
+ * English language strings for local_chuspasocial.
  *
  * @package    local_chuspasocial
  */
