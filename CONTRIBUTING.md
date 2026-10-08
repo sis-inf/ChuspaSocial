@@ -22,10 +22,24 @@ git remote add upstream https://github.com/sis-inf/PROYECTO.git
 ```
 
 ### 4. Sincroniza antes de trabajar
+`git fetch upstream` descarga la información más reciente del repositorio original y actualiza las referencias remotas, sin modificar directamente la rama de trabajo.
+
 ```bash
-git checkout dev
-git pull upstream dev
+git fetch upstream
 ```
+
+`git rebase upstream/dev` actualiza la rama de trabajo colocando sus cambios sobre la versión más reciente de la rama `dev` del repositorio original.
+
+```bash
+git rebase upstream/dev
+```
+
+`git push --force-with-lease` actualiza la rama remota después de realizar un `rebase`, evitando sobrescribir cambios remotos que no se hayan recibido previamente.
+
+```bash
+git push --force-with-lease
+```
+
 
 ### 5. Crea tu rama de trabajo
 ```bash
@@ -34,12 +48,12 @@ git checkout -b tipo/descripcion-corta
 
 Ejemplos de nombres de rama:
 
-feat/endpoint-metricas-cpu
-docs/readme-instalacion
-fix/calculo-ram-incorrecto
-test/pruebas-unitarias-cpu
-chore/configurar-github-actions
-security/analisis-dependencias
+feat/post-service-create
+docs/rf-012-comentarios
+fix/orden-comentarios
+test/post-service-create
+chore/configurar-phpcs-moodle
+security/validar-capabilities-publicaciones
 
 ### 6. Trabaja y haz commits pequeños
 ```bash
@@ -73,11 +87,11 @@ git push origin tipo/descripcion-corta
 
 ### Ejemplos
 
-feat: agregar endpoint /metrics para CPU
-fix: corregir cálculo de porcentaje de RAM
-docs: agregar guía de instalación en Windows
-test: agregar pruebas unitarias para módulo de disco
-chore: configurar GitHub Actions para CI
+feat: agregar creación de publicaciones en el muro
+fix: corregir orden cronológico de comentarios
+docs: documentar RF-012 para ver comentarios de una publicación
+test: agregar pruebas para la creación de publicaciones
+chore: configurar phpcs con el estándar de Moodle
 
 ---
 
@@ -103,6 +117,15 @@ chore: configurar GitHub Actions para CI
 | `docs/*` | Documentación |
 | `test/*` | Pruebas |
 | `chore/*` | Configuración |
+
+## Convenciones de nombres de Moodle
+
+Para mantener el código consistente con Moodle, usa estas convenciones:
+
+- **Frankenstyle:** el nombre del componente es `local_chuspasocial`. Úsalo como prefijo cuando Moodle requiera identificar el plugin.
+- **Tablas de base de datos:** sus nombres deben tener como máximo 28 caracteres y mantenerse relacionados con el componente.
+- **Namespaces:** las clases del plugin deben usar el namespace `local_chuspasocial\...` y ubicarse dentro de `classes/` según su responsabilidad.
+- **Claves de strings:** usa identificadores descriptivos en minúsculas y sin espacios, definidos en los archivos de idioma del componente.
 
 ---
 

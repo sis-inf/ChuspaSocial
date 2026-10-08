@@ -1,14 +1,17 @@
-<?php
+﻿<?php
 
-defined('MOODLE_INTERNAL') || die();
+$string['hidecontent'] = 'Hide content';
+$string['messageprovider:gradepublished'] = 'Grade published notification';
+$string['messageprovider:gradepublished_subject'] = 'New grade published';
+$string['messageprovider:newcomment'] = 'New comment notification';
+$string['messageprovider:newcomment_subject'] = 'New comment on your post';
+$string['messageprovider:newfollower'] = 'New follower notification';
+$string['messageprovider:newfollower_subject'] = 'You have a new follower';
+$string['messageprovider:newreport'] = 'New report notification';
+$string['messageprovider:newreport_subject'] = 'New report submitted';
+$string['moderation'] = 'Moderation';
+$string['openreports'] = 'Open reports';
+$string['report'] = 'Report';
+$string['reportreason'] = 'Report reason';
+$string['reportsent'] = 'Report sent';
 
-/**
- * Cadenas de idioma en ingles para local_chuspasocial.
- *
- * @package    local_chuspasocial
- */
-
-$string['messageprovider:gradepublished'] = 'Grade published notifications';
-$string['messageprovider:newcomment'] = 'New comment notifications';
-$string['messageprovider:newfollower'] = 'New follower notifications';
-$string['messageprovider:newreport'] = 'New report notifications';

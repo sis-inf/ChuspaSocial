@@ -1,0 +1,11 @@
+
+
+/* Regla: focus-visible para los botones con clase local-chuspasocial */
+.local-chuspasocial:focus-visible,
+button.local-chuspasocial:focus-visible,
+.btn.local-chuspasocial:focus-visible {
+    outline: 3px solid #0f6cbf;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #ffffff;
+}
+
