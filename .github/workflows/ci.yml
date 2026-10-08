@@ -9,6 +9,8 @@ jobs:
   validar-pr:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: Verificar descripción del PR
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
