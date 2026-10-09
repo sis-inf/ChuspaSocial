@@ -23,4 +23,9 @@ Esta limitación genera las siguientes consecuencias en la comunidad educativa:
 
 ## Fuera de alcance
 
-## Métricas de éxito
+Las siguientes funcionalidades están explícitamente fuera del alcance de este proyecto en su versión actual:
+
+- Pagos en línea.
+- Aplicación móvil nativa.
+- Chat en tiempo real propio.
+- Publicación en redes externas.
