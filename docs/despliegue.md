@@ -1,30 +1,27 @@
 # Guía de Despliegue
 
-## Instalación desde archivo ZIP (Producción)
+## Ajustes del plugin
+A continuación se describen las opciones de configuración disponibles para el administrador del sitio en la plataforma Moodle para el plugin `local_chuspasocial`:
 
-Esta guía describe el procedimiento para instalar el plugin `local_chuspasocial` mediante la interfaz gráfica de Moodle para entornos de producción.
-
-### Requisitos previos
-- Cuenta con rol de **Administrador del sitio** en Moodle.
-- Versión de Moodle 4.5 o superior.
-- Archivo comprimido `local_chuspasocial.zip` descargado desde la sección de **Releases** del repositorio.
-
-### Pasos de instalación
-1. Inicie sesión en la plataforma Moodle como **Administrador del sitio**.
-2. Navegue a **Administración del sitio** > **Plugins** > **Instalar plugins**.
-3. En la sección **Cargar un archivo ZIP**, arrastre el archivo `local_chuspasocial.zip` o selecciónelo mediante el explorador de archivos.
-4. En la casilla **Tipo de plugin**, asegúrese de seleccionar `Local plugin (local)`.
-5. Presione el botón **Instalar plugin desde archivo ZIP**.
-6. En la pantalla de verificación de requerimientos y compatibilidad, presione **Continuar**.
-7. En la vista de actualización de la base de datos, haga clic en **Actualizar base de datos de Moodle ahora**.
-
----
+| Ajuste | Nombre interno | Descripción | Valor por defecto |
+| :--- | :--- | :--- | :--- |
+| **Habilitar Marketplace** | `enablemarketplace` | Permite activar o desactivar el módulo de mercado dentro del plugin. | `1` (Habilitado) |
+| **Longitud máxima del post** | `maxpostlength` | Número máximo de caracteres permitidos por cada publicación. | `280` |
+| **Imágenes máximas por post** | `maxpostimages` | Cantidad máxima de imágenes adjuntas que se pueden incluir en una publicación. | `4` |
+| **Publicaciones por página** | `postsperpage` | Límite de publicaciones que se renderizan por cada página o carga. | `10` |
+| **Moneda** | `currency` | Código de moneda de tres letras (ISO 4217) utilizado en el Marketplace. | `USD` |
 
 ## Evidencia de validación en instalación limpia
+Los pasos de instalación y los ajustes descritos fueron probados y validados en un entorno con una instalación limpia de Moodle.
 
-El procedimiento de instalación desde el archivo `.zip` fue validado exitosamente en un entorno con una instalación limpia de Moodle.
+### Registro de ejecución CLI (`admin/cli/upgrade.php`)
+```text
+$ php admin/cli/upgrade.php --non-interactive
+== Upgrading Moodle database from version 4.5 (Build: 20241018) to 4.5+ ==
 
-### Registro de instalación
-- **Entorno:** Moodle 4.5+ (Build: 20241018) | PHP 8.1.x
-- **Método de prueba:** Carga de `local_chuspasocial.zip` a través de `/admin/tool/installaddon/index.php`.
-- **Resultado:** El plugin fue detectado, instalado y registrado en la base de datos correctamente sin presentar errores de dependencias ni advertencias durante el proceso.
+-->local_chuspasocial
+++ Success (0.04s) ++
+
+Database upgrade completed successfully.
+Purging caches...
+Done.
