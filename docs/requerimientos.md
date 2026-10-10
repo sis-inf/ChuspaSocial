@@ -805,6 +805,7 @@
 | RF-034 | Ver los libros de mis materias | Alta | Pendiente |
 | RF-035 | Buscar libros por título o autor | Media | Pendiente |
 | RF-036 | Contactar al vendedor por la mensajería de Moodle | Alta | Pendiente |
+| RF-037 | Mostrar un contacto externo opcional | Baja | Pendiente |
 | RF-038 | Marcar un libro como vendido | Media | Pendiente |
 | RF-039 | Editar o eliminar un anuncio propio | Media | Pendiente |
 | RF-040 | Subir fotos del libro | Media | Pendiente |
@@ -845,6 +846,18 @@
 - *Dado* un usuario que ya inició una conversación con el vendedor desde el botón "Contactar",
 - *Cuando* envía un mensaje dentro de esa conversación,
 - *Entonces* el vendedor recibe el mensaje en su bandeja de mensajería de Moodle.
+
+### RF-037
+
+*Criterio 1*
+- **Dado** que el vendedor agregó un contacto externo a su anuncio,
+  **cuando** un comprador abre el detalle del anuncio,
+  **entonces** el sistema muestra el contacto externo junto con una advertencia de que la comunicación fuera de la mensajería de Moodle es responsabilidad de ambas partes.
+
+*Criterio 2*
+- **Dado** que el vendedor no agregó un contacto externo,
+  **cuando** un comprador abre el detalle del anuncio,
+  **entonces** el sistema no muestra ningún contacto externo y solo ofrece la mensajería de Moodle.
 
 ### RF-038
 
