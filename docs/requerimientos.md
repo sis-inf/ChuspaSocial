@@ -219,6 +219,7 @@
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
 | RF-025 | Mostrar tareas nuevas en el muro de la materia | Media | Pendiente |
+| RF-026 | Avisar en privado que hay una calificación publicada: solo lo recibe el estudiante calificado y nunca es público | Baja | Pendiente |
 
 #### Criterios de aceptación
 
@@ -233,6 +234,18 @@
 - **Dado** un estudiante inscrito en una materia con tareas nuevas,
 - **Cuando** accede al muro de la materia,
 - **Entonces** ve las publicaciones de actividad correspondientes a las tareas nuevas, con la información de la tarea y su fecha.
+
+### RF-026
+
+**Criterio 1**
+- **Dado** un docente que publica la calificación de un estudiante en una tarea o parcial,
+- **Cuando** la calificación queda publicada,
+- **Entonces** el sistema envía un aviso privado únicamente a ese estudiante indicando que su calificación está disponible.
+
+**Criterio 2**
+- **Dado** un aviso de calificación publicada,
+- **Cuando** se genera la notificación,
+- **Entonces** el aviso no aparece en el muro ni es visible para otros usuarios que no sean el estudiante calificado.
 
 ### Administración
 
