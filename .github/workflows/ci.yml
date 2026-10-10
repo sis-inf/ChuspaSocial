@@ -52,3 +52,27 @@ jobs:
             exit 1
           fi
           echo "✅ PR tiene un título válido"
+
+      - name: Verificar nombre de la rama del PR
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          REGEX="^(feat|fix|docs|test|chore|refactor|security|data)/[a-z0-9._-]+$"
+          if [[ ! "$HEAD_REF" =~ $REGEX ]]; then
+            echo "❌ ERROR: El nombre de la rama no cumple con las convenciones del proyecto."
+            echo ""
+            echo "El nombre de la rama debe seguir el formato:"
+            echo "  tipo/descripcion-corta"
+            echo ""
+            echo "Donde 'tipo' es uno de:"
+            echo "  - feat, fix, docs, test, chore, refactor, security, data"
+            echo "Y 'descripcion-corta' solo puede tener minúsculas, números, guiones, puntos y guiones bajos."
+            echo ""
+            echo "Ejemplos válidos:"
+            echo "  - docs/rf-020"
+            echo "  - chore/ci-rama"
+            echo "  - fix/error-login"
+            echo "Nombre de rama recibido: '$HEAD_REF'"
+            exit 1
+          fi
+          echo "✅ Rama tiene un nombre válido: $HEAD_REF"
