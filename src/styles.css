@@ -1,4 +1,12 @@
 
+/*
+ * Estilos locales de ChuspaSocial.
+ * Las clases CSS propias deben utilizar el prefijo local-chuspasocial.
+ */
+
+
+.local-chuspasocial {
+}
 
 /* Regla: focus-visible para los botones con clase local-chuspasocial */
 .local-chuspasocial:focus-visible,

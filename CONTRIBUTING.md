@@ -129,6 +129,60 @@ Para mantener el código consistente con Moodle, usa estas convenciones:
 
 ---
 
+## Resolver conflictos de merge
+
+Un conflicto aparece cuando tu rama y `dev` cambiaron las mismas líneas de un archivo. Pasa seguido en archivos que muchos editan a la vez, como `docs/glosario.md`. Ejemplo: tú agregaste el término «Hilo» y otro PR ya fusionado agregó «Grupo» en el mismo lugar de la tabla.
+
+### 1. Trae los cambios de `dev` a tu rama
+```bash
+git checkout docs/mi-rama
+git fetch upstream
+git merge upstream/dev
+```
+
+Git avisa qué archivo tiene conflicto:
+
+```text
+CONFLICTO (contenido): Conflicto de fusión en docs/glosario.md
+```
+
+### 2. Busca las marcas de conflicto en el archivo
+```text
+<<<<<<< HEAD
+| Hilo | Conversación formada por una publicación y sus comentarios. |
+=======
+| Grupo | Conjunto de usuarios de un curso que comparten publicaciones. |
+>>>>>>> upstream/dev
+```
+
+- Entre `<<<<<<< HEAD` y `=======` está tu versión.
+- Entre `=======` y `>>>>>>> upstream/dev` está lo que ya tiene `dev`.
+
+### 3. Deja el resultado correcto y borra las marcas
+En una tabla como la del glosario casi siempre hay que conservar las dos filas, en orden alfabético:
+
+```text
+| Grupo | Conjunto de usuarios de un curso que comparten publicaciones. |
+| Hilo | Conversación formada por una publicación y sus comentarios. |
+```
+
+Comprueba que no quedó ninguna marca (no debe mostrar nada):
+
+```bash
+git grep -n '<<<<<<<' -- docs/glosario.md
+```
+
+### 4. Termina el merge y sube tu rama
+```bash
+git add docs/glosario.md
+git commit --no-edit
+git push origin docs/mi-rama
+```
+
+El PR se actualiza solo con el nuevo commit. Nunca uses `git push --force` para resolver un conflicto.
+
+---
+
 ## ¿No sabes por dónde empezar?
 
 1. Revisa los issues abiertos con la etiqueta `good first issue`

@@ -303,9 +303,22 @@
 
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
+| RF-028 | Notificar al usuario cuando obtiene un nuevo seguidor. | Baja | Pendiente |
 | RF-027 | Notificar un comentario en mi publicación | Media | Pendiente |
 
 #### Criterios de aceptación
+
+### RF-028
+
+**Criterio 1**
+- **Dado** que un usuario sigue a otro usuario,
+- **Cuando** se registra el nuevo seguimiento,
+- **Entonces** el usuario seguido recibe una notificación indicando que tiene un nuevo seguidor.
+
+**Criterio 2**
+- **Dado** que un usuario ha recibido un nuevo seguimiento,
+- **Cuando** consulta sus notificaciones,
+- **Entonces** puede visualizar la notificación con el nombre del usuario que comenzó a seguirlo.
 
 ### RF-027
 
@@ -318,6 +331,32 @@
 - **Dado** un usuario que comenta su propia publicación,
 - **Cuando** se guarda el comentario,
 - **Entonces** el sistema no envía ninguna notificación.
+
+### Reportes
+
+| ID | Descripción | Prioridad | Estado |
+|---|---|---|---|
+| RF-029 | Reportar una publicación, comentario o anuncio de libro | Alta | Pendiente |
+
+#### Criterios de aceptación
+
+### RF-029
+
+**Criterio 1**
+
+- **Dado** que un usuario visualiza una publicación, comentario o anuncio de libro,
+
+- **Cuando** selecciona la opción de reportar e indica un motivo,
+
+- **Entonces** el sistema registra el reporte asociado al contenido seleccionado y al motivo indicado.
+
+**Criterio 2**
+
+- **Dado** que un usuario desea reportar un contenido,
+
+- **Cuando** selecciona un motivo y confirma el reporte,
+
+- **Entonces** el sistema guarda el reporte y notifica que fue registrado correctamente.
 
 ## Requerimientos No Funcionales
 
@@ -873,9 +912,11 @@
 | RNF-002 | El plugin debe instalarse y ejecutarse sin errores en PHP 8.1, 8.2 y 8.3. Verificación: ejecutar la suite PHPUnit y moodle-plugin-ci sobre las tres versiones de PHP en el CI, que debe pasar sin fallos. | Compatibilidad | Pendiente |
 | RNF-004 | El muro debe cargar y mostrar 50 publicaciones en menos de 2 segundos. Verificación: medir el tiempo de carga en una prueba con 50 publicaciones y comprobar que sea menor a 2 segundos. | Rendimiento | Pendiente |
 | RNF-003 | El plugin debe funcionar sin errores con MariaDB, MySQL y PostgreSQL compatibles con Moodle 4.5 LTS. Verificación: ejecutar la suite PHPUnit y moodle-plugin-ci usando cada motor de base de datos y comprobar que todas las pruebas finalicen sin fallos. | Compatibilidad | Pendiente |
+| RNF-009 | La interfaz de usuario debe adaptarse y ser completamente funcional en dispositivos móviles (smartphones y tablets). Verificación: Alcanzar un puntaje de al menos 90/100 en Google Lighthouse (Mobile) y no tener desbordamiento horizontal en pantallas desde 320px. | Usabilidad | Pendiente |
 | RNF-012 | Las clases del plugin en `classes/` deben alcanzar al menos 70 % de cobertura de líneas con PHPUnit. Verificación: ejecutar PHPUnit con reporte de cobertura y comprobar que la cobertura de `classes/` sea igual o superior al 70 %. | Mantenibilidad | Pendiente |
 | RNF-011 | El código PHP del plugin debe cumplir el estándar de codificación de Moodle sin errores ni warnings de PHPCS. Verificación: ejecutar PHPCS con el estándar Moodle sobre el plugin y comprobar 0 errores y 0 warnings. | Mantenibilidad | Pendiente |
 | RNF-010 | La interfaz del plugin debe funcionar correctamente en las dos últimas versiones estables de Chrome, Firefox, Edge y Safari. Verificación: ejecutar los casos de prueba manuales de interfaz en las 8 combinaciones de navegador y versión y comprobar que todos finalicen sin fallos. | Compatibilidad | Pendiente |
+| RNF-013 | Las acciones importantes del sistema deben registrarse mediante la Events API, incluyendo al menos la identificación de la acción, el usuario y la fecha y hora. Verificación: revisar los eventos registrados mediante la Events API y comprobar que cada acción importante contiene estos datos. | Auditoría | Pendiente |
 
 
 ## Requerimientos de Sistema

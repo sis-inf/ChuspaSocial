@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <XMLDB PATH="local/chuspasocial/db" VERSION="20261006" COMMENT="XMLDB file for Moodle">
     <TABLES>
+        <TABLE NAME="local_chuspasocial_reaction" COMMENT="Reacciones de tipo me gusta sobre las publicaciones">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="postid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Id de la publicacion reaccionada"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Id del usuario que reacciona"/>
+                <FIELD NAME="type" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="like" SEQUENCE="false" COMMENT="Tipo de reaccion"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Marca de tiempo de creacion"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
     </TABLES>
 </XMLDB>

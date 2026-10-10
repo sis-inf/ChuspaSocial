@@ -23,7 +23,7 @@ jobs:
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          if ! printf '%s\n' "$PR_BODY" | grep -qi "closes #\|fixes #\|refs #"; then
+          if ! printf '%s\n' "$PR_BODY" | grep -Eqi '(closes|fixes|resolves) #[0-9]+'; then
             echo "El PR debe referenciar un issue con 'Closes #N'"
             exit 1
           fi
