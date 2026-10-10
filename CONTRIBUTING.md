@@ -129,6 +129,26 @@ Para mantener el código consistente con Moodle, usa estas convenciones:
 
 ---
 
+## Quién sube `version.php`
+
+Los PR no modifican `version.php`. La versión del plugin se sube en issues aparte, así se evitan conflictos entre los PR.
+
+### Probar cambios de `db/` en tu copia local
+
+Moodle solo aplica los cambios de `db/` si detecta una versión nueva del plugin. Para probarlos:
+
+1. Sube `$plugin->version` en `version.php`, solo en tu copia local.
+2. Entra a tu Moodle local como administrador. Moodle detecta la versión nueva y muestra la pantalla de actualización: confírmala desde ahí (también puedes ir a Administración del sitio > Notificaciones).
+3. Comprueba que el cambio se aplicó.
+4. Antes de hacer commit, descarta el cambio de versión:
+```bash
+   git restore version.php
+```
+
+No uses `git add .`: agrega solo los archivos de tu issue y confirma con `git status` que `version.php` no aparece como modificado.
+
+---
+
 ## Resolver conflictos de merge
 
 Un conflicto aparece cuando tu rama y `dev` cambiaron las mismas líneas de un archivo. Pasa seguido en archivos que muchos editan a la vez, como `docs/glosario.md`. Ejemplo: tú agregaste el término «Hilo» y otro PR ya fusionado agregó «Grupo» en el mismo lugar de la tabla.
