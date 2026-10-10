@@ -11,4 +11,11 @@ if ($ADMIN->fulltree) {
         'BOB',                                   
         PARAM_ALPHA                              
     ));
+
+    $settings->add(new admin_setting_configcheckbox(
+        'local_chuspasocial/enablemarketplace',
+        new lang_string('enablemarketplace', 'local_chuspasocial'),
+        new lang_string('enablemarketplace_desc', 'local_chuspasocial'),
+        1
+    ));
 }
