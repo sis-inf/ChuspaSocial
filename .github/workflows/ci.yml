@@ -52,3 +52,22 @@ jobs:
             exit 1
           fi
           echo "✅ PR tiene un título válido"
+
+      - name: Verificar que los PR de trabajo apunten a dev
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          if [ "$BASE_REF" = "main" ] && [ "$HEAD_REF" != "dev" ]; then
+            echo "❌ ERROR: Los PR de trabajo deben apuntar a 'dev', no a 'main'."
+            echo ""
+            echo "Detectado:"
+            echo "  - Rama base:   $BASE_REF"
+            echo "  - Rama origen: $HEAD_REF"
+            echo ""
+            echo "Cómo corregirlo:"
+            echo "  1. Cambia la rama base del PR a 'dev' en GitHub."
+            echo "  2. Si necesitas mergear a 'main', hazlo desde 'dev' mediante un PR de release."
+            exit 1
+          fi
+          echo "✅ PR apunta a '$BASE_REF' (correcto)"
