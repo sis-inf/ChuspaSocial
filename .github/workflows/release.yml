@@ -1,0 +1,30 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Preparar paquetes
+        run: |
+          mkdir -p package/chuspasocial
+          cp -r src/. package/chuspasocial/
+
+      - name: crear ZIP
+        run: |
+          cd package
+          zip -r ../local_chuspasocial.zip chuspasocial
+
+      - name: guardar artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: local_chuspasocial
+          path: local_chuspasocial.zip
