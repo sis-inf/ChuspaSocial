@@ -9,6 +9,8 @@ jobs:
   validar-pr:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: Verificar descripción del PR
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
@@ -52,3 +54,39 @@ jobs:
             exit 1
           fi
           echo "✅ PR tiene un título válido"
+
+      - name: Verificar que el PR modifique un solo archivo
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          FILES=$(gh pr view "$PR_NUMBER" --json files --jq '.files[].path')
+          COUNT=$(printf '%s\n' "$FILES" | grep -c .)
+
+          if [ "$COUNT" -le 1 ]; then
+            echo "✅ El PR modifica $COUNT archivo(s)"
+            exit 0
+          fi
+
+          # Excepción: amd/src + amd/build del mismo módulo
+          if [ "$COUNT" -eq 2 ]; then
+            SRC=$(printf '%s\n' "$FILES" | grep -E '^src/amd/src/.+\.js$' || true)
+            BUILD=$(printf '%s\n' "$FILES" | grep -E '^src/amd/build/.+\.min\.js$' || true)
+            if [ -n "$SRC" ] && [ -n "$BUILD" ]; then
+              echo "✅ Excepción permitida: cambio en amd/src + amd/build"
+              exit 0
+            fi
+          fi
+
+          echo "❌ ERROR: Este PR modifica $COUNT archivos."
+          echo ""
+          echo "Cada PR debe modificar un solo archivo (un issue = una rama = un PR)."
+          echo "Excepción permitida: un cambio en src/amd/src/*.js acompañado de su build en src/amd/build/*.min.js."
+          echo ""
+          echo "Archivos detectados:"
+          printf '  - %s\n' $FILES
+          echo ""
+          echo "Cómo corregirlo:"
+          echo "  1. Divide los cambios en PRs separados, uno por archivo."
+          echo "  2. O vuelve a tu rama y mueve los archivos sobrantes a otra rama."
+          exit 1
