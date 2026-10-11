@@ -37,7 +37,31 @@ Alterna el estado de seguimiento (*follow/unfollow*) para un usuario o etiqueta 
   "action": "followed",
   "message": "Ahora sigues a este usuario."
 }
-´´´
+```
+
+### `local_chuspasocial_report_item`
+
+Permite reportar un contenido u objeto específico dentro de la plataforma.
+
+**Descripción:**  
+Envía un reporte sobre un elemento especificado indicando el componente, el ID del elemento y el motivo del reporte.
+
+**Parámetros:**  
+* `component` (string): Componente o tipo de elemento reportado (ej. `'post'`, `'comment'`, `'user'`).
+* `itemid` (int): ID del elemento que se reporta.
+* `reason` (string): Motivo o descripción del reporte.
+
+**Capacidades requeridas:**  
+* `local/chuspasocial:report`
+
+**Respuesta de ejemplo (JSON):**  
+```json
+{
+  "status": true,
+  "message": "Reporte enviado con éxito."
+}
+```
+
 ## Códigos de error
 
 | Código | Descripción |
