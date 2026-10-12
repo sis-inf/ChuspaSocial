@@ -58,8 +58,7 @@ jobs:
       - name: Instalar moodle-plugin-ci
         run: |
           composer global config --no-plugins allow-plugins.moodlehq/moodle-plugin-ci true
-          composer global config audit.blocked-packages false
-          composer global require "moodlehq/moodle-plugin-ci:^4.0" --no-audit
+          composer global require "moodlehq/moodle-plugin-ci:^4.0" --no-audit --no-block-security-advisories
           echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
 
       - name: Ejecutar PHPLint
