@@ -6,7 +6,10 @@
 
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
+| RF-001 | Ver el muro general al ingresar y mostrar primero las publicaciones más recientes | Alta | Pendiente |
+| RF-003 | Publicar en el muro de una materia | Alta | Pendiente |
 | RF-006 | Eliminar una publicación propia | Alta | Pendiente |
+| RF-007 | Ver el muro de una materia | Alta | Pendiente |
 | RF-008 | Cargar más publicaciones | Media | Pendiente |
 
 ### Módulo Tags
@@ -28,7 +31,23 @@
 | RF-019 | Ver el perfil social de un usuario | Media | Pendiente |
 
 #### Criterios de aceptación
+### RF-001: Ver el muro general al ingresar
 
+**Criterio 1**
+
+* **Dado** un usuario autenticado,
+* **Cuando** ingresa al módulo Muro,
+* **Entonces** el sistema muestra las publicaciones disponibles en el muro general.
+
+**Criterio 2**
+
+* **Dado** que existen varias publicaciones en el muro,
+* **Cuando** el usuario visualiza el muro general,
+* **Entonces** las publicaciones se muestran desde la más reciente hasta la más antigua.
+### RF-003
+
+- **Dado** que el usuario ha iniciado sesión y pertenece a una materia, **cuando** publica un mensaje en el muro de esa materia, **entonces** el sistema debe registrar y mostrar la publicación.
+- **Dado** que el usuario intenta publicar un mensaje vacío, **cuando** confirma la publicación, **entonces** el sistema debe impedir que se publique.
 ### RF-006
 
 **Criterio 1**
@@ -42,6 +61,20 @@
 - **Dado** un usuario que intenta eliminar una publicación creada por otro usuario,
 - **Cuando** confirma la acción de eliminación,
 - **Entonces** el sistema rechaza la operación y mantiene la publicación sin cambios.
+
+### RF-007
+
+**Criterio 1**
+
+- **Dado** un estudiante inscrito en una materia,
+- **Cuando** accede al curso y selecciona la opción para ver el muro de la materia,
+- **Entonces** el sistema muestra el muro filtrado con las publicaciones de esa materia.
+
+**Criterio 2**
+
+- **Dado** un usuario que no está inscrito en una materia,
+- **Cuando** intenta acceder al muro de esa materia,
+- **Entonces** el sistema rechaza el acceso y no muestra las publicaciones de la materia.
 
 ### RF-008 - Cargar más publicaciones
 
@@ -219,6 +252,7 @@
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
 | RF-025 | Mostrar tareas nuevas en el muro de la materia | Media | Pendiente |
+| RF-026 | Avisar en privado que hay una calificación publicada: solo lo recibe el estudiante calificado y nunca es público | Baja | Pendiente |
 
 #### Criterios de aceptación
 
@@ -233,6 +267,18 @@
 - **Dado** un estudiante inscrito en una materia con tareas nuevas,
 - **Cuando** accede al muro de la materia,
 - **Entonces** ve las publicaciones de actividad correspondientes a las tareas nuevas, con la información de la tarea y su fecha.
+
+### RF-026
+
+**Criterio 1**
+- **Dado** un docente que publica la calificación de un estudiante en una tarea o parcial,
+- **Cuando** la calificación queda publicada,
+- **Entonces** el sistema envía un aviso privado únicamente a ese estudiante indicando que su calificación está disponible.
+
+**Criterio 2**
+- **Dado** un aviso de calificación publicada,
+- **Cuando** se genera la notificación,
+- **Entonces** el aviso no aparece en el muro ni es visible para otros usuarios que no sean el estudiante calificado.
 
 ### Administración
 
@@ -258,11 +304,25 @@
 
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
+| RF-032 | Publicar un anuncio de libro con título, autor, descripción, precio y fotos | Alta | Pendiente |
 | RF-033 | Vincular un libro a una o más materias | Alta | Pendiente |
 | RF-035 | Buscar libros por título o autor | Media | Pendiente |
 
 #### Criterios de aceptación
 
+### RF-032
+
+*Criterio 1*
+
+- *Dado* un usuario autenticado que desea publicar un libro en el Marketplace,
+- *Cuando* completa el título, autor, descripción, precio y agrega fotos del libro,
+- *Entonces* el sistema permite publicar el anuncio del libro correctamente.
+
+*Criterio 2*
+
+- *Dado* un usuario que está publicando un anuncio de libro en el Marketplace,
+- *Cuando* intenta publicar el anuncio sin completar alguno de los datos obligatorios,
+- *Entonces* el sistema rechaza la publicación y muestra un mensaje indicando la información que falta.
 ### RF-033
 
 *Criterio 1*
@@ -289,9 +349,22 @@
 
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
+| RF-028 | Notificar al usuario cuando obtiene un nuevo seguidor. | Baja | Pendiente |
 | RF-027 | Notificar un comentario en mi publicación | Media | Pendiente |
 
 #### Criterios de aceptación
+
+### RF-028
+
+**Criterio 1**
+- **Dado** que un usuario sigue a otro usuario,
+- **Cuando** se registra el nuevo seguimiento,
+- **Entonces** el usuario seguido recibe una notificación indicando que tiene un nuevo seguidor.
+
+**Criterio 2**
+- **Dado** que un usuario ha recibido un nuevo seguimiento,
+- **Cuando** consulta sus notificaciones,
+- **Entonces** puede visualizar la notificación con el nombre del usuario que comenzó a seguirlo.
 
 ### RF-027
 
@@ -304,6 +377,32 @@
 - **Dado** un usuario que comenta su propia publicación,
 - **Cuando** se guarda el comentario,
 - **Entonces** el sistema no envía ninguna notificación.
+
+### Reportes
+
+| ID | Descripción | Prioridad | Estado |
+|---|---|---|---|
+| RF-029 | Reportar una publicación, comentario o anuncio de libro | Alta | Pendiente |
+
+#### Criterios de aceptación
+
+### RF-029
+
+**Criterio 1**
+
+- **Dado** que un usuario visualiza una publicación, comentario o anuncio de libro,
+
+- **Cuando** selecciona la opción de reportar e indica un motivo,
+
+- **Entonces** el sistema registra el reporte asociado al contenido seleccionado y al motivo indicado.
+
+**Criterio 2**
+
+- **Dado** que un usuario desea reportar un contenido,
+
+- **Cuando** selecciona un motivo y confirma el reporte,
+
+- **Entonces** el sistema guarda el reporte y notifica que fue registrado correctamente.
 
 ## Requerimientos No Funcionales
 
@@ -448,7 +547,7 @@
 |---|---|---|---|
 | RNF-001 | El plugin debe instalarse y funcionar sin errores en Moodle 4.5 LTS (rama MOODLE_405_STABLE). Verificación: ejecutar la suite PHPUnit y moodle-plugin-ci sobre Moodle 4.5 en el CI, que debe pasar sin fallos. | Compatibilidad | Pendiente |
 | RNF-002 | El plugin debe instalarse y ejecutarse sin errores en PHP 8.1, 8.2 y 8.3. Verificación: ejecutar la suite PHPUnit y moodle-plugin-ci sobre las tres versiones de PHP en el CI, que debe pasar sin fallos. | Compatibilidad | Pendiente |
-
+| RNF-007 | Toda la interfaz del plugin debe estar disponible en inglés (`lang/en`) y en español (`lang/es`), sin claves de texto faltantes en ninguno de los dos idiomas. Verificación: comparar las claves de `lang/en/` y `lang/es/` y comprobar que ambos tengan exactamente las mismas claves (0 faltantes) y que moodle-plugin-ci finalice sin errores. | Internacionalización | Pendiente |
 
 ## Requerimientos de Sistema
 
@@ -752,8 +851,10 @@
 | RF-034 | Ver los libros de mis materias | Alta | Pendiente |
 | RF-035 | Buscar libros por título o autor | Media | Pendiente |
 | RF-036 | Contactar al vendedor por la mensajería de Moodle | Alta | Pendiente |
+| RF-037 | Mostrar un contacto externo opcional | Baja | Pendiente |
 | RF-038 | Marcar un libro como vendido | Media | Pendiente |
 | RF-039 | Editar o eliminar un anuncio propio | Media | Pendiente |
+| RF-040 | Subir fotos del libro | Media | Pendiente |
 
 #### Criterios de aceptación
 
@@ -792,6 +893,18 @@
 - *Cuando* envía un mensaje dentro de esa conversación,
 - *Entonces* el vendedor recibe el mensaje en su bandeja de mensajería de Moodle.
 
+### RF-037
+
+*Criterio 1*
+- **Dado** que el vendedor agregó un contacto externo a su anuncio,
+  **cuando** un comprador abre el detalle del anuncio,
+  **entonces** el sistema muestra el contacto externo junto con una advertencia de que la comunicación fuera de la mensajería de Moodle es responsabilidad de ambas partes.
+
+*Criterio 2*
+- **Dado** que el vendedor no agregó un contacto externo,
+  **cuando** un comprador abre el detalle del anuncio,
+  **entonces** el sistema no muestra ningún contacto externo y solo ofrece la mensajería de Moodle.
+
 ### RF-038
 
 **Criterio 1**
@@ -817,6 +930,18 @@
 - **Dado** un vendedor autenticado que tiene un anuncio propio publicado en el Marketplace,
 - **Cuando** solicita eliminarlo y confirma la acción,
 - **Entonces** el sistema elimina el anuncio y deja de mostrarlo en el Marketplace.
+
+### RF-040
+
+**Criterio 1**
+- **Dado** que el vendedor está publicando o editando un anuncio,
+  **cuando** selecciona fotos del libro y no supera el máximo de N fotos por anuncio,
+  **entonces** el sistema guarda las fotos y las muestra en el detalle del anuncio.
+
+**Criterio 2**
+- **Dado** que el vendedor ya alcanzó el máximo de N fotos por anuncio,
+  **cuando** intenta subir otra foto,
+  **entonces** el sistema rechaza la foto y muestra un mensaje indicando el límite permitido.
 
 ### Notificaciones
 
@@ -846,9 +971,12 @@
 | RNF-002 | El plugin debe instalarse y ejecutarse sin errores en PHP 8.1, 8.2 y 8.3. Verificación: ejecutar la suite PHPUnit y moodle-plugin-ci sobre las tres versiones de PHP en el CI, que debe pasar sin fallos. | Compatibilidad | Pendiente |
 | RNF-004 | El muro debe cargar y mostrar 50 publicaciones en menos de 2 segundos. Verificación: medir el tiempo de carga en una prueba con 50 publicaciones y comprobar que sea menor a 2 segundos. | Rendimiento | Pendiente |
 | RNF-003 | El plugin debe funcionar sin errores con MariaDB, MySQL y PostgreSQL compatibles con Moodle 4.5 LTS. Verificación: ejecutar la suite PHPUnit y moodle-plugin-ci usando cada motor de base de datos y comprobar que todas las pruebas finalicen sin fallos. | Compatibilidad | Pendiente |
+| RNF-008 | Cumplir con el estándar de accesibilidad WCAG 2.1 nivel AA en todas las interfaces de usuario. Verificación: ejecutar la herramienta de análisis axe-core o WAVE y alcanzar 0 errores críticos y mayores. | Accesibilidad | Pendiente |
+| RNF-009 | La interfaz de usuario debe adaptarse y ser completamente funcional en dispositivos móviles (smartphones y tablets). Verificación: Alcanzar un puntaje de al menos 90/100 en Google Lighthouse (Mobile) y no tener desbordamiento horizontal en pantallas desde 320px. | Usabilidad | Pendiente |
 | RNF-012 | Las clases del plugin en `classes/` deben alcanzar al menos 70 % de cobertura de líneas con PHPUnit. Verificación: ejecutar PHPUnit con reporte de cobertura y comprobar que la cobertura de `classes/` sea igual o superior al 70 %. | Mantenibilidad | Pendiente |
 | RNF-011 | El código PHP del plugin debe cumplir el estándar de codificación de Moodle sin errores ni warnings de PHPCS. Verificación: ejecutar PHPCS con el estándar Moodle sobre el plugin y comprobar 0 errores y 0 warnings. | Mantenibilidad | Pendiente |
 | RNF-010 | La interfaz del plugin debe funcionar correctamente en las dos últimas versiones estables de Chrome, Firefox, Edge y Safari. Verificación: ejecutar los casos de prueba manuales de interfaz en las 8 combinaciones de navegador y versión y comprobar que todos finalicen sin fallos. | Compatibilidad | Pendiente |
+| RNF-013 | Las acciones importantes del sistema deben registrarse mediante la Events API, incluyendo al menos la identificación de la acción, el usuario y la fecha y hora. Verificación: revisar los eventos registrados mediante la Events API y comprobar que cada acción importante contiene estos datos. | Auditoría | Pendiente |
 
 
 ## Requerimientos de Sistema
@@ -856,3 +984,4 @@
 | ID | Descripción |
 |---|---|
 | RS-001 | El cron de Moodle debe estar activo y ejecutarse periódicamente para procesar las notificaciones y tareas programadas de ChuspaSocial. Si no se cumple, estas funciones pueden retrasarse o no ejecutarse. |
+| RS-003 | La funcionalidad de tags de Moodle debe estar habilitada mediante el ajuste `usetags`. Si no se cumple, las funciones de etiquetado y filtrado por tags de ChuspaSocial pueden no estar disponibles o funcionar incorrectamente. |
