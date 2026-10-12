@@ -57,7 +57,7 @@ jobs:
           
       - name: Ejecutar PHPLint
         if: ${{ !cancelled() }}
-        uses: overtrue/phplint@v4
+        run: moodle-plugin-ci phplint
       - name: Instalar moodle-plugin-ci
         run: |
           composer global require moodlehq/moodle-plugin-ci
