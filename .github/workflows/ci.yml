@@ -55,13 +55,14 @@ jobs:
           fi
           echo "✅ PR tiene un título válido"
           
-      - name: Ejecutar PHPLint
-        if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phplint
       - name: Instalar moodle-plugin-ci
         run: |
           composer global require moodlehq/moodle-plugin-ci
           echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
+
+      - name: Ejecutar PHPLint
+        if: ${{ !cancelled() }}
+        run: moodle-plugin-ci phplint
 
       - name: Ejecutar phpcs
         if: ${{ !cancelled() }}
