@@ -6,8 +6,12 @@
 
 | ID | Descripción | Prioridad | Estado |
 |---|---|---|---|
+<<<<<<< HEAD
+| RF-005 | Editar una publicación propia | Media | Pendiente |
+=======
 | RF-001 | Ver el muro general al ingresar y mostrar primero las publicaciones más recientes | Alta | Pendiente |
 | RF-003 | Publicar en el muro de una materia | Alta | Pendiente |
+>>>>>>> 42fd05a31cb72ac68d42c51922a3d74cec7224fe
 | RF-006 | Eliminar una publicación propia | Alta | Pendiente |
 | RF-007 | Ver el muro de una materia | Alta | Pendiente |
 | RF-008 | Cargar más publicaciones | Media | Pendiente |
@@ -985,3 +989,14 @@
 |---|---|
 | RS-001 | El cron de Moodle debe estar activo y ejecutarse periódicamente para procesar las notificaciones y tareas programadas de ChuspaSocial. Si no se cumple, estas funciones pueden retrasarse o no ejecutarse. |
 | RS-003 | La funcionalidad de tags de Moodle debe estar habilitada mediante el ajuste `usetags`. Si no se cumple, las funciones de etiquetado y filtrado por tags de ChuspaSocial pueden no estar disponibles o funcionar incorrectamente. |
+### RF-005
+
+**Criterio 1**
+- **Dado** un usuario autenticado que ha realizado una publicación en el muro,
+- **Cuando** selecciona la opción de editar su publicación y guarda los cambios realizados en el texto,
+- **Entonces** el sistema debe actualizar el contenido de la publicación y mostrar la marca de «editado».
+
+**Criterio 2**
+- **Dado** un usuario autenticado que intenta editar una publicación en el muro,
+- **Cuando** la publicación pertenece a otro usuario o intenta guardar el contenido vacío,
+- **Entonces** el sistema debe denegar la acción y mostrar un mensaje de error correspondiente.
