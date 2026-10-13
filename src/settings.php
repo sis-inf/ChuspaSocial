@@ -53,6 +53,7 @@ if ($ADMIN->fulltree) {
         new lang_string('enablemarketplace', 'local_chuspasocial'),
         new lang_string('enablemarketplace_desc', 'local_chuspasocial'),
         1
+    ));
     $settings->add(new admin_setting_configtext(
         'local_chuspasocial/postsperpage',
         new lang_string('postsperpage', 'local_chuspasocial'),
