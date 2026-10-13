@@ -55,11 +55,12 @@ jobs:
           fi
           echo "✅ PR tiene un título válido"
           
+      
       - name: Instalar moodle-plugin-ci
         run: |
           composer global config --no-plugins allow-plugins.moodlehq/moodle-plugin-ci true
-          composer global require "moodlehq/moodle-plugin-ci:^4.0" --no-audit --no-block-security-advisories
-          echo "$HOME/.composer/vendor/bin" >> $GITHUB_PATH
+          composer global require "moodlehq/moodle-plugin-ci:^4.0" --no-audit --no-blocking
+          echo "$(composer global config bin-dir --absolute)" >> $GITHUB_PATH
 
       - name: Ejecutar PHPLint
         if: ${{ !cancelled() }}
