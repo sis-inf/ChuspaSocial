@@ -63,16 +63,18 @@ jobs:
           echo "$PWD/ci/bin" >> "$GITHUB_PATH"
           echo "$PWD/ci/vendor/bin" >> "$GITHUB_PATH"
 
+      
       - name: Ejecutar PHPLint
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phplint
+        run: moodle-plugin-ci phplint src
 
       - name: Ejecutar phpcs
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpcs --max-warnings 0
+        run: moodle-plugin-ci phpcs --max-warnings 0 src
+
       - name: Ejecutar phpunit
         if: ${{ !cancelled() }}
-        run: moodle-plugin-ci phpunit --fail-on-warning
+        run: moodle-plugin-ci phpunit --fail-on-warning src
         
       - name: Verificar nombre de la rama del PR
         env:
