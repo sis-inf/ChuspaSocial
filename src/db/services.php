@@ -32,4 +32,11 @@ $functions = [
         'type' => 'write',
         'ajax' => true,
     ],
+    'local_chuspasocial_get_listings' => [
+        'classname' => \local_chuspasocial\external\get_listings::class,
+        'methodname' => 'execute',
+        'description' => 'Get the book listings of my courses or the listings that match a search.',
+        'type' => 'read',
+        'ajax' => true,
+    ],
 ];
