@@ -24,4 +24,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = [];
+$capabilities = [
+    'local/chuspasocial:view' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'user' => CAP_ALLOW,
+        ],
+    ],
+];
