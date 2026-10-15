@@ -26,12 +26,12 @@ build/
 out/
 target/
 *.o
+temp_auto_push.bat
 *.exe
 *.dll
 *.so
 
 # IDEs
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -54,4 +54,5 @@ moodledata/
 # Contenedores PKCS#12: guardan el certificado Y la clave privada (a menudo con contraseña débil)
 *.p12
 # Igual que .p12 (formato PKCS#12 usado en Windows); nunca deben versionarse
-*.pfx
+*.pfx.gitignore
+branch_structure.json
