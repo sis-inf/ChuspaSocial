@@ -1,6 +1,17 @@
 # Plan de Pruebas
 
 ## 1. Objetivo
+Verificar que el plugin `local_chuspasocial` cumple su propósito sobre Moodle 4.5 LTS: habilitar las funciones sociales del sistema (muro general y por materia, comentarios y reacciones, tags, seguidores, notificaciones y mensajes directos, reporte de contenido y el marketplace de libros) con la calidad, seguridad y compatibilidad requeridas antes de cada integración a `dev`.
+
+Concretamente, este plan busca:
+
+- **Corrección funcional:** que cada capacidad del alcance (publicaciones, comentarios, reacciones, tags, seguidores, notificaciones, reportes y anuncios de libros) se comporte según lo especificado, incluida la validación de formularios (por ejemplo, precio mayor o igual a 0).
+- **Integridad de datos:** que las siete tablas del modelo de datos (`post`, `comment`, `reaction`, `follow`, `report`, `listing` y `lstcourse`) se creen, escriban y lean de forma consistente, sin fugas de visibilidad entre materias.
+- **Seguridad y permisos:** que las capacidades y el aislamiento por curso impidan el acceso indebido a datos ajenos y que el flujo de reporte de contenido funcione de principio a fin.
+- **Compatibilidad:** que el plugin opere sobre Moodle 4.5 LTS con PHP 8.1 a 8.3 y los tres motores soportados (MariaDB, MySQL y PostgreSQL), con la interfaz en español e inglés.
+- **Reproducibilidad:** que la suite automatizada (PHPUnit y Behat) se pueda ejecutar en CI para validar cada entrega antes de fusionar.
+
+Estos objetivos se descomponen en los criterios de salida de la sección 6 y se materializan en los tipos de prueba de la sección 3.
 
 ## 2. Alcance
 ### En alcance
