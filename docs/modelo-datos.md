@@ -127,3 +127,86 @@ Almacena los anuncios de libros publicados por los usuarios.
 | `dismissed` | El reporte fue revisado y descartado sin acción. |
 | `available` | El libro está disponible para la venta. |
 | `sold` | El libro ya fue vendido. |
+
+## Diagrama entidad-relación
+
+El siguiente diagrama resume las siete tablas del modelo de datos y sus relaciones con las tablas estándar de Moodle `user` y `course`. Se renderiza con Mermaid.
+
+```mermaid
+erDiagram
+    user ||--o{ local_chuspasocial_post : "publica"
+    course ||--o{ local_chuspasocial_post : "contiene"
+    post ||--o{ comment : "recibe"
+    user ||--o{ comment : "comenta"
+    post ||--o{ reaction : "recibe"
+    user ||--o{ reaction : "reacciona"
+    user ||--o{ follow : "sigue"
+    user ||--o{ report : "reporta"
+    user ||--o{ listing : "publica"
+    listing ||--o{ lstcourse : "vincula a"
+    course ||--o{ lstcourse : "contiene"
+
+    local_chuspasocial_post {
+        int id PK
+        int userid FK
+        int courseid "0 = muro general"
+        char type "post|announcement|activity"
+        text content
+        int contentformat
+        int hidden
+        int timecreated
+        int timemodified
+    }
+    local_chuspasocial_comment {
+        int id PK
+        int postid FK
+        int userid FK
+        text content
+        int contentformat
+        int timecreated
+        int timemodified
+    }
+    local_chuspasocial_reaction {
+        int id PK
+        int postid FK
+        int userid FK
+        char type "like"
+        int timecreated
+    }
+    local_chuspasocial_follow {
+        int id PK
+        int userid FK
+        char itemtype "user|tag"
+        int itemid
+        int timecreated
+    }
+    local_chuspasocial_report {
+        int id PK
+        char itemtype "post|comment|listing"
+        int itemid
+        int reporterid FK
+        text reason
+        char status "open|resolved|dismissed"
+        int resolvedby "FK, nullable"
+        int timecreated
+        int timeresolved "nullable"
+    }
+    local_chuspasocial_listing {
+        int id PK
+        int userid FK
+        char title
+        char author
+        text description "nullable"
+        int descriptionformat
+        number price
+        char externalcontact "nullable"
+        char status "available|sold"
+        int timecreated
+        int timemodified
+    }
+    local_chuspasocial_lstcourse {
+        int id PK
+        int listingid FK
+        int courseid FK
+    }
+```
