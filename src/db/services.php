@@ -32,4 +32,11 @@ $functions = [
         'type' => 'write',
         'ajax' => true,
     ],
+    'local_chuspasocial_toggle_reaction' => [
+        'classname' => \local_chuspasocial\external\toggle_reaction::class,
+        'methodname' => 'execute',
+        'description' => 'Toggle reaction status for a post.',
+        'type' => 'write',
+        'ajax' => true,
+    ],
 ];
