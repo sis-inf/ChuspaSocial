@@ -21,9 +21,28 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'ChuspaSocial';
 $string['addcomment'] = 'Add comment';
+$string['available'] = 'Available';
+$string['bookauthor'] = 'Book author';
+$string['bookdescription'] = 'Book description';
+$string['books'] = 'Books';
+$string['booktitle'] = 'Book title';
 $string['comments'] = 'Comments';
+$string['contactseller'] = 'Contact seller';
+$string['courses'] = 'Courses';
 $string['deletecomment'] = 'Delete comment';
+$string['externalcontact'] = 'External contact';
+$string['externalcontactwarning'] = 'This contact is external to the platform. Be careful when sharing personal data.';
+$string['free'] = 'Free';
+$string['markassold'] = 'Mark as sold';
+$string['marketplace'] = 'Marketplace';
+$string['marketplacedisabled'] = 'The marketplace is disabled.';
+$string['nobooks'] = 'No books available.';
 $string['nocomments'] = 'No comments yet';
+$string['photos'] = 'Photos';
+$string['pluginname'] = 'ChuspaSocial';
+$string['price'] = 'Price';
+$string['publishbook'] = 'Publish book';
+$string['searchbooks'] = 'Search books';
+$string['sold'] = 'Sold';
 $string['writecomment'] = 'Write a comment...';
