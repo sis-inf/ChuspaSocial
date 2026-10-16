@@ -21,9 +21,19 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'ChuspaSocial';
 $string['addcomment'] = 'Add comment';
 $string['comments'] = 'Comments';
+$string['currency'] = 'Currency';
+$string['currency_desc'] = 'Currency used to display prices.';
 $string['deletecomment'] = 'Delete comment';
+$string['enablemarketplace'] = 'Enable marketplace';
+$string['enablemarketplace_desc'] = 'Allow the use of the ChuspaSocial marketplace.';
+$string['maxpostimages'] = 'Maximum images per post';
+$string['maxpostimages_desc'] = 'Maximum number of images allowed in a post.';
+$string['maxpostlength'] = 'Maximum post length';
+$string['maxpostlength_desc'] = 'Maximum number of characters allowed in a post.';
 $string['nocomments'] = 'No comments yet';
+$string['pluginname'] = 'ChuspaSocial';
+$string['postsperpage'] = 'Posts per page';
+$string['postsperpage_desc'] = 'Number of posts shown on each page.';
 $string['writecomment'] = 'Write a comment...';
