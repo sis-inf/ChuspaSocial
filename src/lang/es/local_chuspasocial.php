@@ -74,3 +74,13 @@ $string['sold'] = 'Vendido';
 $string['tagarea_local_chuspasocial_post'] = 'Publicaciones';
 $string['tags'] = 'Etiquetas';
 $string['unfollowtag'] = 'Dejar de seguir etiqueta';
+
+defined('MOODLE_INTERNAL') || die();
+
+$string['follow'] = 'Seguir';
+$string['followers'] = 'Seguidores';
+$string['following'] = 'Siguiendo';
+$string['personalfeed'] = 'Feed personal';
+$string['pluginname'] = 'ChuspaSocial';
+$string['socialprofile'] = 'Perfil social';
+$string['unfollow'] = 'Dejar de seguir';
