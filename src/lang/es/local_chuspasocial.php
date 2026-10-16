@@ -74,3 +74,10 @@ $string['sold'] = 'Vendido';
 $string['tagarea_local_chuspasocial_post'] = 'Publicaciones';
 $string['tags'] = 'Etiquetas';
 $string['unfollowtag'] = 'Dejar de seguir etiqueta';
+
+defined('MOODLE_INTERNAL') || die();
+
+$string['like'] = 'Me gusta';
+$string['likes'] = '{$a} me gusta';
+$string['pluginname'] = 'ChuspaSocial';
+$string['unlike'] = 'Ya no me gusta';
