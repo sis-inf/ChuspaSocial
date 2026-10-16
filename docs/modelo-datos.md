@@ -127,3 +127,64 @@ Almacena los anuncios de libros publicados por los usuarios.
 | `dismissed` | El reporte fue revisado y descartado sin acción. |
 | `available` | El libro está disponible para la venta. |
 | `sold` | El libro ya fue vendido. |
+
+## Diagrama de Tablas de la base de datos (Mermaid)
+
+erDiagram
+    USER ||--o{ POST : publica
+    COURSE ||--o{ POST : contiene
+    POST ||--o{ COMMENT : tiene
+    USER ||--o{ COMMENT : comenta
+    POST ||--o{ REACTION : recibe
+    USER ||--o{ REACTION : reacciona
+    USER ||--o{ FOLLOWER : sigue
+    USER ||--o| PROFILE : tiene
+    USER ||--o{ NOTIFICATION : recibe
+    USER ||--o{ SETTINGS : configura
+
+    USER {
+        int id
+        string username
+    }
+    COURSE {
+        int id
+        string fullname
+    }
+    POST {
+        int id
+        int userid
+        int courseid
+        string content
+    }
+    COMMENT {
+        int id
+        int postid
+        int userid
+        string content
+    }
+    REACTION {
+        int id
+        int postid
+        int userid
+        string type
+    }
+    FOLLOWER {
+        int id
+        int userid
+        int followerid
+    }
+    PROFILE {
+        int id
+        int userid
+        string bio
+    }
+    NOTIFICATION {
+        int id
+        int userid
+        string type
+    }
+    SETTINGS {
+        int id
+        int userid
+        string name
+    }
