@@ -1,17 +1,13 @@
-name: Check Documentation Links
+name: Check Documentation
 
 on:
   push:
-    branches: [ dev ]
     paths:
-      - 'README.md'
-      - 'docs/**'
+      - '**/*.md'
       - '.github/workflows/docs.yml'
   pull_request:
-    branches: [ dev ]
     paths:
-      - 'README.md'
-      - 'docs/**'
+      - '**/*.md'
       - '.github/workflows/docs.yml'
 
 permissions:
@@ -31,3 +27,15 @@ jobs:
           fail: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run markdownlint-cli2
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: '**/*.md'
+          
