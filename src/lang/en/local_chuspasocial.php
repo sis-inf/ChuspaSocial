@@ -21,9 +21,19 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'ChuspaSocial';
 $string['addcomment'] = 'Add comment';
+$string['chuspasocial:comment'] = 'Comment on posts';
+$string['chuspasocial:createlisting'] = 'Publish books in the marketplace';
+$string['chuspasocial:follow'] = 'Follow users and tags';
+$string['chuspasocial:moderate'] = 'Moderate posts and comments';
+$string['chuspasocial:post'] = 'Create posts';
+$string['chuspasocial:postannouncement'] = 'Post official announcements';
+$string['chuspasocial:react'] = 'React to posts';
+$string['chuspasocial:report'] = 'Report content';
+$string['chuspasocial:view'] = 'View ChuspaSocial';
+$string['chuspasocial:viewmarketplace'] = 'View the marketplace';
 $string['comments'] = 'Comments';
 $string['deletecomment'] = 'Delete comment';
 $string['nocomments'] = 'No comments yet';
+$string['pluginname'] = 'ChuspaSocial';
 $string['writecomment'] = 'Write a comment...';
