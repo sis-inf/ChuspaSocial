@@ -21,9 +21,14 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'ChuspaSocial';
 $string['addcomment'] = 'Add comment';
 $string['comments'] = 'Comments';
 $string['deletecomment'] = 'Delete comment';
+$string['eventcommentcreated'] = 'Comment created';
+$string['eventlistingcreated'] = 'Book listing created';
+$string['eventpostcreated'] = 'Post created';
+$string['eventpostdeleted'] = 'Post deleted';
+$string['eventreactionadded'] = 'Reaction added';
 $string['nocomments'] = 'No comments yet';
+$string['pluginname'] = 'ChuspaSocial';
 $string['writecomment'] = 'Write a comment...';
