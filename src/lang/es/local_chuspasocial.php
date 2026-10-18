@@ -41,7 +41,6 @@ $string['chuspasocial:react'] = 'Reaccionar a publicaciones';
 $string['chuspasocial:report'] = 'Reportar contenido';
 $string['chuspasocial:view'] = 'Ver ChuspaSocial';
 $string['chuspasocial:viewmarketplace'] = 'Ver el marketplace';
-$string['comment'] = 'Comentario';
 $string['comments'] = 'Comentarios';
 $string['confirmdeletepost'] = '¿Seguro que quieres eliminar esta publicación?';
 $string['contactseller'] = 'Contactar al vendedor';
