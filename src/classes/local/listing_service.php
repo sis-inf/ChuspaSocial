@@ -24,8 +24,6 @@
 
 namespace local_chuspasocial\local;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Service class for book listings.
  */
@@ -35,20 +33,19 @@ class listing_service {
      * Formats a listing price using the configured currency.
      *
      * @param float $price Price to format.
-     * @return string Formatted price or 'free' for zero.
+     * @return string Formatted price or localized free label for zero.
      */
     public static function format_price(float $price): string {
-
         if ($price == 0.0) {
-            return 'free';
+            return get_string('free', 'local_chuspasocial');
         }
-      
+
         $currency = get_config('local_chuspasocial', 'currency');
-      
+
         if (empty($currency)) {
             $currency = 'BOB';
         }
-      
+
         return $currency . ' ' . format_float($price, 2);
     }
 }
