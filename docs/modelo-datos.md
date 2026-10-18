@@ -127,3 +127,28 @@ Almacena los anuncios de libros publicados por los usuarios.
 | `dismissed` | El reporte fue revisado y descartado sin acción. |
 | `available` | El libro está disponible para la venta. |
 | `sold` | El libro ya fue vendido. |
+
+## Tabla `local_chuspasocial_reaction` (reacciones)
+
+Almacena las reacciones de tipo «me gusta» que los usuarios realizan sobre las publicaciones. Actualmente el plugin soporta una única reacción (`like`); la columna `type` está normalizada como `CHAR` para admitir tipos adicionales en el futuro.
+
+| Campo | Tipo XMLDB | Nulo | Descripción |
+|---|---|---|---|
+| `id` | INT(10), secuencia | NO | Clave primaria autoincremental de la reacción. |
+| `postid` | INT(10) | NO | ID de la publicación sobre la que se reacciona (referencia a `local_chuspasocial_post.id`). Por defecto: `0`. |
+| `userid` | INT(10) | NO | ID del usuario que reacciona (referencia a `user.id`). Por defecto: `0`. |
+| `type` | CHAR(20) | NO | Tipo de reacción. Valor permitido: `like`. Por defecto: `like`. |
+| `timecreated` | INT(10) | NO | Marca de tiempo Unix de creación de la reacción. Por defecto: `0`. |
+
+### Valores permitidos de `type`
+
+XMLDB no tiene un tipo enum, por lo que `type` se define como `CHAR` y sus valores se validan en la aplicación.
+
+| Valor | Significado |
+|---|---|
+| `like` | El usuario le da «me gusta» a la publicación. |
+
+### Relaciones con otras tablas
+
+- **postid:** relación con `local_chuspasocial_post`; una publicación puede recibir varias reacciones.
+- **userid:** relación con `user`; un usuario puede reaccionar a varias publicaciones.
