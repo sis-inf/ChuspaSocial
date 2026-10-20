@@ -30,6 +30,66 @@ namespace local_chuspasocial\local;
 class listing_service {
 
     /**
+     * Search listings by book title or author, case insensitive.
+     *
+     * The search text is always passed as a SQL parameter, never concatenated.
+     *
+     * @param string $q Text to search in the title or the author.
+     * @param int $page Page number, starting at 0.
+     * @param int $perpage Number of listings per page.
+     * @return array List of listing records, newest first.
+     */
+    public static function search(string $q, int $page, int $perpage): array {
+        global $DB;
+
+        $titlelike = $DB->sql_like('l.title', ':title', false);
+        $authorlike = $DB->sql_like('l.author', ':author', false);
+        $pattern = '%' . $DB->sql_like_escape(trim($q)) . '%';
+
+        $sql = "SELECT l.*
+                  FROM {local_chuspasocial_listing} l
+                 WHERE $titlelike OR $authorlike
+              ORDER BY l.timecreated DESC, l.id DESC";
+        $params = ['title' => $pattern, 'author' => $pattern];
+
+        return array_values($DB->get_records_sql($sql, $params, $page * $perpage, $perpage));
+    }
+
+    /**
+     * Get the available listings linked to the courses of the current user.
+     *
+     * A listing linked to several courses of the user is returned only once.
+     *
+     * @param int $page Page number, starting at 0.
+     * @param int $perpage Number of listings per page.
+     * @return array List of listing records, newest first.
+     */
+    public static function get_for_my_courses(int $page, int $perpage): array {
+        global $DB;
+
+        $courseids = array_keys(enrol_get_my_courses('id'));
+        if (empty($courseids)) {
+            return [];
+        }
+
+        [$insql, $params] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED, 'course');
+        $params['status'] = 'available';
+
+        $sql = "SELECT l.*
+                  FROM {local_chuspasocial_listing} l
+                 WHERE l.status = :status
+                   AND EXISTS (
+                       SELECT 1
+                         FROM {local_chuspasocial_lstcourse} lc
+                        WHERE lc.listingid = l.id
+                          AND lc.courseid $insql
+                   )
+              ORDER BY l.timecreated DESC, l.id DESC";
+
+        return array_values($DB->get_records_sql($sql, $params, $page * $perpage, $perpage));
+    }
+
+    /**
      * Formats a listing price using the configured currency.
      *
      * @param float $price Price to format.

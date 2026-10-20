@@ -42,4 +42,19 @@ $capabilities = array(
         ),
         'riskbitmask' => RISK_SPAM,
     ),
+    'local/chuspasocial:view' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'user' => CAP_ALLOW,
+        ),
+    ),
+    'local/chuspasocial:follow' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'user' => CAP_ALLOW,
+        ),
+        'riskbitmask' => RISK_SPAM,
+    ),
 );
