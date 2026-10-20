@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['addcomment'] = 'Agregar comentario';
 $string['activitypost'] = 'Publicación de actividad';
+$string['addcomment'] = 'Agregar comentario';
 $string['available'] = 'Disponible';
 $string['bookauthor'] = 'Autor del libro';
 $string['bookdescription'] = 'Descripción del libro';
@@ -87,8 +87,8 @@ $string['messageprovider:newfollower_subject'] = '{$a} ha comenzado a seguirte';
 $string['messageprovider:newreport'] = 'Nuevo reporte';
 $string['messageprovider:newreport_subject'] = 'Se ha generado un nuevo reporte: {$a}';
 $string['newpost'] = 'Nueva publicación';
-$string['nocomments'] = 'Aún no hay comentarios.';
 $string['nobooks'] = 'No hay libros disponibles.';
+$string['nocomments'] = 'Aún no hay comentarios.';
 $string['nopostsyet'] = 'Aún no hay publicaciones.';
 $string['officialannouncement'] = 'Anuncio oficial';
 $string['personalfeed'] = 'Feed personal';
