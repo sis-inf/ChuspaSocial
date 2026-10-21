@@ -34,4 +34,8 @@ $PAGE->set_title(get_string('pluginname', 'local_chuspasocial'));
 $PAGE->set_heading(get_string('pluginname', 'local_chuspasocial'));
 
 echo $OUTPUT->header();
+
+// Renderizar la plantilla wall según el issue #314.
+echo $OUTPUT->render_from_template('local_chuspasocial/wall', []);
+
 echo $OUTPUT->footer();
