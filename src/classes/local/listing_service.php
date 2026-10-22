@@ -108,4 +108,40 @@ class listing_service {
 
         return $currency . ' ' . format_float($price, 2);
     }
+
+    /**
+     * Replace the courses linked to a listing.
+     *
+     * All the current links of the listing in the lstcourse table are removed and
+     * a new link is added for each course. Repeated ids are linked only once.
+     * Every course must exist; if one does not exist, nothing is changed.
+     *
+     * @param int $listingid Id of the listing.
+     * @param array $courseids Ids of the courses to link to the listing.
+     * @throws \moodle_exception If a course does not exist.
+     */
+    public static function set_courses(int $listingid, array $courseids): void {
+        global $DB;
+
+        $courseids = array_values(array_unique(array_map('intval', $courseids)));
+
+        if (!empty($courseids)) {
+            [$insql, $params] = $DB->get_in_or_equal($courseids, SQL_PARAMS_NAMED, 'course');
+            $params['siteid'] = SITEID;
+            $existing = $DB->get_fieldset_select('course', 'id', "id $insql AND id <> :siteid", $params);
+            $missing = array_diff($courseids, array_map('intval', $existing));
+            if (!empty($missing)) {
+                throw new \moodle_exception('invalidcourseid', 'error', '', implode(', ', $missing));
+            }
+        }
+
+        $transaction = $DB->start_delegated_transaction();
+        $DB->delete_records('local_chuspasocial_lstcourse', ['listingid' => $listingid]);
+        $records = [];
+        foreach ($courseids as $courseid) {
+            $records[] = (object) ['listingid' => $listingid, 'courseid' => $courseid];
+        }
+        $DB->insert_records('local_chuspasocial_lstcourse', $records);
+        $transaction->allow_commit();
+    }
 }
