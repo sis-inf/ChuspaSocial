@@ -11,6 +11,8 @@ namespace local_chuspasocial\privacy;
 defined('MOODLE_INTERNAL') || die();
 
 use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\approved_userlist;
+use core_privacy\local\request\userlist;
 use core_tag_tag;
 
 /**
@@ -19,7 +21,9 @@ use core_tag_tag;
  * @package    local_chuspasocial
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class provider implements \core_privacy\local\metadata\null_provider {
+class provider implements
+        \core_privacy\local\metadata\null_provider,
+        \core_privacy\local\request\core_userlist_provider {
 
     /**
      * Returns the reason why this plugin does not store personal data.
@@ -231,6 +235,220 @@ class provider implements \core_privacy\local\metadata\null_provider {
                     // Delete the reports made by the user about listings.
                     $DB->delete_records('local_chuspasocial_report', ['reporterid' => $userid, 'itemtype' => 'listing']);
                 }
+            }
+
+            $transaction->allow_commit();
+        } catch (\Throwable $e) {
+            $transaction->rollback($e);
+        }
+    }
+
+    /**
+     * Gets the users that have data stored in a context.
+     *
+     * In a course context it adds the authors of the posts, comments and reactions of the course,
+     * and the users that reported posts or comments of the course.
+     * In the system context it does the same for the general wall, and also adds the users that
+     * follow or are followed, the owners of book listings and the users that reported listings.
+     *
+     * @param userlist $userlist The list to add the users to.
+     * @return void
+     */
+    public static function get_users_in_context(userlist $userlist): void {
+        $context = $userlist->get_context();
+
+        if ($context->contextlevel == CONTEXT_COURSE) {
+            $courseid = (int) $context->instanceid;
+        } else if ($context->contextlevel == CONTEXT_SYSTEM) {
+            $courseid = 0;
+        } else {
+            return;
+        }
+
+        $params = ['courseid' => $courseid];
+        $courseposts = 'SELECT id FROM {local_chuspasocial_post} WHERE courseid = :courseid';
+        $coursecomments = "SELECT id FROM {local_chuspasocial_comment} WHERE postid IN ($courseposts)";
+
+        // Authors of the posts, the comments and the reactions.
+        $userlist->add_from_sql(
+            'userid',
+            'SELECT userid FROM {local_chuspasocial_post} WHERE courseid = :courseid',
+            $params
+        );
+        $userlist->add_from_sql(
+            'userid',
+            "SELECT userid FROM {local_chuspasocial_comment} WHERE postid IN ($courseposts)",
+            $params
+        );
+        $userlist->add_from_sql(
+            'userid',
+            "SELECT userid FROM {local_chuspasocial_reaction} WHERE postid IN ($courseposts)",
+            $params
+        );
+
+        // Users that reported posts or comments.
+        $userlist->add_from_sql(
+            'userid',
+            "SELECT reporterid AS userid FROM {local_chuspasocial_report}
+              WHERE itemtype = 'post' AND itemid IN ($courseposts)",
+            $params
+        );
+        $userlist->add_from_sql(
+            'userid',
+            "SELECT reporterid AS userid FROM {local_chuspasocial_report}
+              WHERE itemtype = 'comment' AND itemid IN ($coursecomments)",
+            $params
+        );
+
+        if ($courseid == 0) {
+            // Users that follow and users that are followed.
+            $userlist->add_from_sql('userid', 'SELECT userid FROM {local_chuspasocial_follow}', []);
+            $userlist->add_from_sql(
+                'userid',
+                "SELECT itemid AS userid FROM {local_chuspasocial_follow} WHERE itemtype = 'user'",
+                []
+            );
+
+            // Owners of book listings and users that reported listings.
+            $userlist->add_from_sql('userid', 'SELECT userid FROM {local_chuspasocial_listing}', []);
+            $userlist->add_from_sql(
+                'userid',
+                "SELECT reporterid AS userid FROM {local_chuspasocial_report} WHERE itemtype = 'listing'",
+                []
+            );
+        }
+    }
+
+    /**
+     * Deletes the data of several users in a context.
+     *
+     * It deletes the same data as delete_data_for_user(), but for all the users of the approved list.
+     *
+     * @param approved_userlist $userlist The approved context and the users.
+     * @return void
+     */
+    public static function delete_data_for_users(approved_userlist $userlist): void {
+        global $DB;
+
+        $userids = $userlist->get_userids();
+        if (empty($userids)) {
+            return;
+        }
+
+        $context = $userlist->get_context();
+        if ($context->contextlevel == CONTEXT_COURSE) {
+            $courseid = (int) $context->instanceid;
+        } else if ($context->contextlevel == CONTEXT_SYSTEM) {
+            $courseid = 0;
+        } else {
+            return;
+        }
+
+        [$usersql, $userparams] = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED, 'usr');
+        $params = ['courseid' => $courseid] + $userparams;
+        $fs = get_file_storage();
+
+        $courseposts = 'SELECT id FROM {local_chuspasocial_post} WHERE courseid = :courseid';
+        $ownposts = $courseposts . " AND userid $usersql";
+        $coursecomments = "SELECT id FROM {local_chuspasocial_comment} WHERE postid IN ($courseposts)";
+        $owncomments = $coursecomments . " AND userid $usersql";
+        $postcomments = "SELECT id FROM {local_chuspasocial_comment} WHERE postid IN ($ownposts)";
+
+        $transaction = $DB->start_delegated_transaction();
+
+        try {
+            // Delete the tags and the files of the posts of the users.
+            $postids = $DB->get_fieldset_select(
+                'local_chuspasocial_post',
+                'id',
+                "courseid = :courseid AND userid $usersql",
+                $params
+            );
+            foreach ($postids as $postid) {
+                core_tag_tag::remove_all_item_tags('local_chuspasocial', 'local_chuspasocial_post', $postid);
+                $fs->delete_area_files($context->id, 'local_chuspasocial', 'postimage', $postid);
+                $fs->delete_area_files($context->id, 'local_chuspasocial', 'post', $postid);
+            }
+
+            // Delete the reports about the posts of the users and their comments.
+            $DB->delete_records_select(
+                'local_chuspasocial_report',
+                "itemtype = 'comment' AND itemid IN ($postcomments)",
+                $params
+            );
+            $DB->delete_records_select(
+                'local_chuspasocial_report',
+                "itemtype = 'post' AND itemid IN ($ownposts)",
+                $params
+            );
+
+            // Delete the reports about the comments of the users on other posts.
+            $DB->delete_records_select(
+                'local_chuspasocial_report',
+                "itemtype = 'comment' AND itemid IN ($owncomments)",
+                $params
+            );
+
+            // Delete the reports made by the users about content of this context.
+            $DB->delete_records_select(
+                'local_chuspasocial_report',
+                "reporterid $usersql AND itemtype = 'comment' AND itemid IN ($coursecomments)",
+                $params
+            );
+            $DB->delete_records_select(
+                'local_chuspasocial_report',
+                "reporterid $usersql AND itemtype = 'post' AND itemid IN ($courseposts)",
+                $params
+            );
+
+            // Delete the reactions and the comments on the posts of the users.
+            $DB->delete_records_select('local_chuspasocial_reaction', "postid IN ($ownposts)", $params);
+            $DB->delete_records_select('local_chuspasocial_comment', "postid IN ($ownposts)", $params);
+
+            // Delete the reactions and the comments of the users on other posts.
+            $DB->delete_records_select(
+                'local_chuspasocial_reaction',
+                "userid $usersql AND postid IN ($courseposts)",
+                $params
+            );
+            $DB->delete_records_select(
+                'local_chuspasocial_comment',
+                "userid $usersql AND postid IN ($courseposts)",
+                $params
+            );
+
+            // Delete the posts of the users.
+            $DB->delete_records_select('local_chuspasocial_post', "courseid = :courseid AND userid $usersql", $params);
+
+            if ($courseid == 0) {
+                // Delete the follows of the users and the follows other users have of them.
+                $DB->delete_records_select('local_chuspasocial_follow', "userid $usersql", $userparams);
+                $DB->delete_records_select(
+                    'local_chuspasocial_follow',
+                    "itemtype = 'user' AND itemid $usersql",
+                    $userparams
+                );
+
+                // Delete the book listings of the users with their photos and course links.
+                $listingids = $DB->get_fieldset_select('local_chuspasocial_listing', 'id', "userid $usersql", $userparams);
+                foreach ($listingids as $listingid) {
+                    $fs->delete_area_files($context->id, 'local_chuspasocial', 'photos', $listingid);
+                }
+                $ownlistings = "SELECT id FROM {local_chuspasocial_listing} WHERE userid $usersql";
+                $DB->delete_records_select(
+                    'local_chuspasocial_report',
+                    "itemtype = 'listing' AND itemid IN ($ownlistings)",
+                    $userparams
+                );
+                $DB->delete_records_select('local_chuspasocial_lstcourse', "listingid IN ($ownlistings)", $userparams);
+                $DB->delete_records_select('local_chuspasocial_listing', "userid $usersql", $userparams);
+
+                // Delete the reports made by the users about listings.
+                $DB->delete_records_select(
+                    'local_chuspasocial_report',
+                    "reporterid $usersql AND itemtype = 'listing'",
+                    $userparams
+                );
             }
 
             $transaction->allow_commit();
