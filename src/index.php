@@ -33,7 +33,7 @@ require_login();
 $context = context_system::instance();
 require_capability('local/chuspasocial:view', $context);
 
-$page = optional_param('page', 0, PARAM_INT);
+$page = max(0, optional_param('page', 0, PARAM_INT));
 $perpage = 20;
 
 $PAGE->set_context($context);
@@ -80,6 +80,14 @@ foreach ($records as $record) {
     $posts[] = $data;
 }
 
+// Only advertise a next page when the feed contains another page of records.
+$nextpage = null;
+foreach (post_service::get_general_feed($page + 1, $perpage) as $nextpost) {
+    $nextpage = $page + 1;
+    break;
+}
+$wallcontext = ['posts' => $posts, 'nextpage' => $nextpage];
+
 echo $OUTPUT->header();
-echo $OUTPUT->render_from_template('local_chuspasocial/wall', ['posts' => $posts]);
+echo $OUTPUT->render_from_template('local_chuspasocial/wall', $wallcontext);
 echo $OUTPUT->footer();
