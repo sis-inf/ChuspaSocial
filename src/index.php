@@ -77,6 +77,9 @@ foreach ($records as $record) {
     $data['authorname'] = $data['authorfullname'];
     $data['isannouncement'] = ($record->type === post::TYPE_ANNOUNCEMENT);
 
+    // The comments template expects the post identifier as postid.
+    $data['postid'] = (int) $data['id'];
+
     $posts[] = $data;
 }
 
