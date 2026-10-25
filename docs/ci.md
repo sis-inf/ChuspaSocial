@@ -118,3 +118,16 @@ Si siguen apareciendo errores, revisa cada mensaje y corrige manualmente los pro
 Finalmente, guarda los cambios, realiza el commit y actualiza tu Pull Request. GitHub Actions volverá a ejecutar las verificaciones correspondientes.
 
 **Importante:** `moodle-plugin-ci phpcs --max-warnings 0` es el comando utilizado por el workflow `CI`. Los comandos locales con `vendor/bin/phpcs` y `vendor/bin/phpcbf` son alternativas para revisar y corregir el estilo durante el desarrollo; no sustituyen las verificaciones del Pull Request.
+
+## Ejecución Local de Validaciones (CI)
+
+### 1. Validar el Estándar de Código (PHPCS)
+Estándar exigido por el CI: `moodle-cs`
+```bash
+vendor/bin/phpcs --standard=moodle-cs .
+```
+
+### 2. Ejecutar Pruebas Unitarias (PHPUnit)
+```bash
+vendor/bin/phpunit
+```
