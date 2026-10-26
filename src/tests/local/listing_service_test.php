@@ -345,5 +345,119 @@ class listing_service_test extends advanced_testcase {
         $this->assertCount(1, $result);
         $this->assertEquals($listingid, $result[0]->id);
     }
+    /**
+     * Creates a user with an explicit listing creation permission.
+     *
+     * @param int $permission Capability permission to assign.
+     * @return \stdClass The generated user.
+     */
+    private function prepare_create_listing_user(int $permission): \stdClass {
+        $generator = $this->getDataGenerator();
+        $user = $generator->create_user();
+        $roleid = $generator->create_role();
+        $context = \context_system::instance();
+
+        assign_capability(
+            'local/chuspasocial:createlisting',
+            $permission,
+            $roleid,
+            $context->id
+        );
+        role_assign($roleid, $user->id, $context->id);
+        $this->setUser($user);
+
+        return $user;
+    }
+
+    /**
+     * An authorised user can create a valid listing.
+     *
+     * @covers \local_chuspasocial\local\listing_service::create_listing
+     */
+    public function test_create_listing_with_valid_data(): void {
+        global $DB;
+
+        set_config('enablemarketplace', 1, 'local_chuspasocial');
+        $user = $this->prepare_create_listing_user(CAP_ALLOW);
+
+        $listing = listing_service::create_listing((object) [
+            'title' => 'Libro de prueba',
+            'author' => 'Autora de prueba',
+            'price' => 25.50,
+        ]);
+
+        $this->assertGreaterThan(0, (int) $listing->get('id'));
+
+        $record = $DB->get_record(
+            'local_chuspasocial_listing',
+            ['id' => $listing->get('id')],
+            '*',
+            MUST_EXIST
+        );
+
+        $this->assertSame((int) $user->id, (int) $record->userid);
+        $this->assertSame('Libro de prueba', $record->title);
+        $this->assertSame('Autora de prueba', $record->author);
+        $this->assertSame(25.50, (float) $record->price);
+    }
+
+    /**
+     * A negative price is rejected.
+     *
+     * @covers \local_chuspasocial\local\listing_service::create_listing
+     */
+    public function test_create_listing_with_negative_price(): void {
+        set_config('enablemarketplace', 1, 'local_chuspasocial');
+        $this->prepare_create_listing_user(CAP_ALLOW);
+
+        $this->expectException(\invalid_parameter_exception::class);
+        $this->expectExceptionMessage(
+            'The price must be greater than or equal to 0'
+        );
+
+        listing_service::create_listing((object) [
+            'title' => 'Libro de prueba',
+            'author' => 'Autora de prueba',
+            'price' => -1,
+        ]);
+    }
+
+    /**
+     * Listing creation is rejected when the marketplace is disabled.
+     *
+     * @covers \local_chuspasocial\local\listing_service::create_listing
+     */
+    public function test_create_listing_when_marketplace_is_disabled(): void {
+        set_config('enablemarketplace', 0, 'local_chuspasocial');
+        $this->prepare_create_listing_user(CAP_ALLOW);
+
+        $this->expectException(\moodle_exception::class);
+        $this->expectExceptionCode('nopermissions');
+
+        listing_service::create_listing((object) [
+            'title' => 'Libro de prueba',
+            'author' => 'Autora de prueba',
+            'price' => 10,
+        ]);
+    }
+
+    /**
+     * A user without the required capability cannot create a listing.
+     *
+     * @covers \local_chuspasocial\local\listing_service::create_listing
+     */
+    public function test_create_listing_without_capability(): void {
+        set_config('enablemarketplace', 1, 'local_chuspasocial');
+        $this->prepare_create_listing_user(CAP_PROHIBIT);
+
+        $this->expectException(\required_capability_exception::class);
+
+        listing_service::create_listing((object) [
+            'title' => 'Libro de prueba',
+            'author' => 'Autora de prueba',
+            'price' => 10,
+        ]);
+    }
+
 }
 
