@@ -122,12 +122,23 @@ Finalmente, guarda los cambios, realiza el commit y actualiza tu Pull Request. G
 ## Ejecución Local de Validaciones (CI)
 
 ### 1. Validar el Estándar de Código (PHPCS)
-Estándar exigido por el CI: `moodle-cs`
+
+Estándar exigido por el CI: `moodle`
+
 ```bash
-vendor/bin/phpcs --standard=moodle-cs .
+vendor/bin/phpcs --standard=moodle --max-warnings=0 local/chuspasocial
 ```
 
 ### 2. Ejecutar Pruebas Unitarias (PHPUnit)
+
+Primero se debe inicializar el entorno desde la carpeta raíz de Moodle:
+
 ```bash
-vendor/bin/phpunit
+php admin/tool/phpunit/cli/init.php
+```
+
+Luego, ejecuta las pruebas indicando la carpeta específica del plugin:
+
+```bash
+vendor/bin/phpunit local/chuspasocial/tests/
 ```
