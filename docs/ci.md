@@ -126,7 +126,7 @@ Finalmente, guarda los cambios, realiza el commit y actualiza tu Pull Request. G
 Estándar exigido por el CI: `moodle`
 
 ```bash
-vendor/bin/phpcs --standard=moodle --max-warnings=0 local/chuspasocial
+vendor/bin/phpcs --standard=moodle local/chuspasocial
 ```
 
 ### 2. Ejecutar Pruebas Unitarias (PHPUnit)
