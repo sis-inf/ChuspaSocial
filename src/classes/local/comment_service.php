@@ -107,3 +107,47 @@ class comment_service {
         return $comment;
     }
 }
+
+namespace local_chuspasocial\local;
+
+defined('MOODLE_INTERNAL') || die();
+
+use moodle_exception;
+
+class comment_service {
+
+    public static function delete_comment(int $commentid): void {
+        global $DB, $USER;
+
+        $comment = $DB->get_record(
+            'local_chuspasocial_comment',
+            ['id' => $commentid],
+            '*',
+            MUST_EXIST
+        );
+
+        $isauthor = (int) $comment->userid === (int) $USER->id;
+
+        $ismoderator = false;
+        if (get_capability_info('local/chuspasocial:moderate')) {
+            $ismoderator = has_capability(
+                'local/chuspasocial:moderate',
+                \context_system::instance()
+            );
+        }
+
+        if (!$isauthor && !$ismoderator) {
+            throw new moodle_exception(
+                'nopermissions',
+                'error',
+                '',
+                'delete this comment'
+            );
+        }
+
+        $DB->delete_records(
+            'local_chuspasocial_comment',
+            ['id' => $commentid]
+        );
+    }
+}
