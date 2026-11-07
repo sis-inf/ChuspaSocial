@@ -63,10 +63,11 @@ jobs:
       - name: Ejecutar phpcs
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phpcs --max-warnings 0
+
       - name: Ejecutar phpunit
         if: ${{ !cancelled() }}
         run: moodle-plugin-ci phpunit --fail-on-warning
-        
+
       - name: Verificar nombre de la rama del PR
         env:
           HEAD_REF: ${{ github.head_ref }}
@@ -90,10 +91,11 @@ jobs:
             exit 1
           fi
           echo "✅ Rama tiene un nombre válido: $HEAD_REF"
+
       - name: Verificar que los PR de trabajo apunten a dev
         env:
           BASE_REF: ${{ github.event.pull_request.base.ref }}
-          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          HEAD_REF: ${{ github.head_ref }}
         run: |
           if [ "$BASE_REF" = "main" ] && [ "$HEAD_REF" != "dev" ]; then
             echo "❌ ERROR: Los PR de trabajo deben apuntar a 'dev', no a 'main'."
@@ -108,6 +110,7 @@ jobs:
             exit 1
           fi
           echo "✅ PR apunta a '$BASE_REF' (correcto)"
+
       - name: Verificar que el PR modifique un solo archivo
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

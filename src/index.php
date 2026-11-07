@@ -80,6 +80,9 @@ foreach ($records as $record) {
     $posts[] = $data;
 }
 
+// Cargar el módulo AMD wall.
+$PAGE->requires->js_call_amd('local_chuspasocial/wall', 'init');
+
 echo $OUTPUT->header();
 echo $OUTPUT->render_from_template('local_chuspasocial/wall', ['posts' => $posts]);
 echo $OUTPUT->footer();
