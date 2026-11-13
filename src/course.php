@@ -148,6 +148,14 @@ foreach ($records as $record) {
         $record->type === post::TYPE_ANNOUNCEMENT
     );
 
+    // Marca de editado y enlace de edicion (solo para el autor).
+    $data['edited'] = (int) $record->timemodified > (int) $record->timecreated;
+    if (!empty($data['canedit'])) {
+        $data['editurl'] = (new moodle_url('/local/chuspasocial/post_edit.php', [
+            'id' => $record->id,
+        ]))->out(false);
+    }
+
     $posts[] = $data;
 }
 

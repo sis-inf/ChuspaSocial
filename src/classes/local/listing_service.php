@@ -51,7 +51,8 @@ class listing_service {
 
         $sql = "SELECT l.*
                   FROM {local_chuspasocial_listing} l
-                 WHERE $titlelike OR $authorlike
+                 WHERE ($titlelike OR $authorlike)
+                   AND l.hidden = 0
               ORDER BY l.timecreated DESC, l.id DESC";
         $params = ['title' => $pattern, 'author' => $pattern];
 
@@ -106,6 +107,7 @@ class listing_service {
         $sql = "SELECT l.*
                   FROM {local_chuspasocial_listing} l
                  WHERE l.status = :status
+                   AND l.hidden = 0
                    AND EXISTS (
                        SELECT 1
                          FROM {local_chuspasocial_lstcourse} lc
@@ -248,7 +250,7 @@ class listing_service {
 
         $listing = new listing($listingid);
 
-        if ((int) $listing->get('userid') !== (int) $USER->id) {
+        if (!self::can_manage($listing, (int) $USER->id)) {
             throw new moodle_exception('nopermissions', 'error', '', 'edit this listing');
         }
 
@@ -280,7 +282,7 @@ class listing_service {
 
         $listing = new listing($listingid);
 
-        if ((int) $listing->get('userid') !== (int) $USER->id) {
+        if (!self::can_manage($listing, (int) $USER->id)) {
             throw new moodle_exception('nopermissions', 'error', '', 'mark this listing as sold');
         }
 

@@ -32,6 +32,8 @@
     * authorname - Full name of the author.
     * authorpictureurl - URL of the author profile picture.
     * timecreated - Unix timestamp of the post.
+    * edited - Boolean, true when the post was modified after it was created.
+    * editurl - URL of the edit page, only set when the current user is the author.
     * content - Post content, already formatted with format_text().
     * isannouncement - Boolean, true when the post type is announcement.
     * hasreacted - Boolean, true when the current user has reacted to the post.
@@ -48,6 +50,8 @@
         "authorname": "Ana Pérez",
         "authorpictureurl": "https://example.com/pix/u/f2.png",
         "timecreated": 1760000000,
+        "edited": true,
+        "editurl": "https://example.com/local/chuspasocial/post_edit.php?id=1",
         "content": "<p>La biblioteca abre hasta las 20:00.</p>",
         "isannouncement": true,
         "hasreacted": true,
@@ -80,6 +84,9 @@
             <div>
                 <div class="font-weight-bold">{{authorname}}</div>
                 <small class="text-muted">{{#userdate}} {{timecreated}}, {{#str}} strftimedatetime, core_langconfig {{/str}} {{/userdate}}</small>
+                {{#edited}}
+                <small class="text-muted" data-region="post-edited">· {{#str}} edited, local_chuspasocial {{/str}}</small>
+                {{/edited}}
             </div>
         </div>
         <div class="card-text">{{{content}}}</div>
@@ -112,6 +119,10 @@
                 aria-label="{{#str}} chuspasocial:report, local_chuspasocial {{/str}}">
             {{#str}} chuspasocial:report, local_chuspasocial {{/str}}
         </button>
+
+        {{#editurl}}
+        <a href="{{editurl}}" class="btn btn-link mt-2">{{#str}} editpost, local_chuspasocial {{/str}}</a>
+        {{/editurl}}
         {{> local_chuspasocial/comments}}
     </div>
 </article>

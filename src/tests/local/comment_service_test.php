@@ -71,7 +71,8 @@ class comment_service_test extends advanced_testcase {
 
         $sink = $this->redirectMessages();
 
-        $commentid = comment_service::add_comment($postid, $comentarista->id, 'Buen aporte');
+        $this->setUser($comentarista);
+        $commentid = comment_service::add_comment($postid, 'Buen aporte')->get('id');
 
         $this->assertGreaterThan(0, $commentid);
 
@@ -114,18 +115,39 @@ class comment_service_test extends advanced_testcase {
     }
 
     /**
-     * Test: Un comentario vacio se guarda tal cual (el servicio no lo valida).
+     * Test: Un comentario vacio se rechaza y no se crea ningun registro.
      */
     public function test_add_comment_vacio(): void {
         global $DB;
 
         $user = $this->getDataGenerator()->create_user();
         $postid = $this->crear_post($user->id);
+        $this->setUser($user);
 
-        $commentid = comment_service::add_comment($postid, $user->id, '');
+        try {
+            comment_service::add_comment($postid, '');
+            $this->fail('Se esperaba una excepcion por comentario vacio.');
+        } catch (\invalid_parameter_exception $e) {
+            $this->assertSame(0, $DB->count_records('local_chuspasocial_comment'));
+        }
+    }
 
-        $comment = $DB->get_record('local_chuspasocial_comment', ['id' => $commentid], '*', MUST_EXIST);
-        $this->assertSame('', $comment->content);
+    /**
+     * Test: Un comentario formado solo por espacios en blanco se rechaza y no se crea ningun registro.
+     */
+    public function test_add_comment_en_blanco(): void {
+        global $DB;
+
+        $user = $this->getDataGenerator()->create_user();
+        $postid = $this->crear_post($user->id);
+        $this->setUser($user);
+
+        try {
+            comment_service::add_comment($postid, "   \t\n  ");
+            $this->fail('Se esperaba una excepcion por comentario en blanco.');
+        } catch (\invalid_parameter_exception $e) {
+            $this->assertSame(0, $DB->count_records('local_chuspasocial_comment'));
+        }
     }
 
     /**

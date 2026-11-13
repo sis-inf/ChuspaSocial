@@ -33,13 +33,15 @@ class comment_service {
     /**
      * Get the comments of a post, oldest first.
      *
-     * Returns an empty array when the post does not exist or is hidden.
+     * Returns an empty array when the post does not exist, is hidden or the
+     * current user cannot view it.
+     * Comments hidden by moderation are not returned.
      *
      * @param int $postid ID of the post to get the comments from.
      * @return array List of comment records, oldest first.
      */
     public static function get_comments(int $postid): array {
-        global $DB;
+        global $DB, $USER;
 
         // The comments are only visible when the post is visible.
         $post = $DB->get_record('local_chuspasocial_post', ['id' => $postid], 'id, hidden');
@@ -47,13 +49,19 @@ class comment_service {
             return [];
         }
 
+        // The comments are only visible to users who can view the post.
+        $persistentpost = new \local_chuspasocial\local\persistent\post($postid);
+        if (!post_service::can_view($persistentpost, (int) $USER->id)) {
+            return [];
+        }
+
         return array_values($DB->get_records(
             'local_chuspasocial_comment',
-            ['postid' => $postid],
+            ['postid' => $postid, 'hidden' => 0],
             'timecreated ASC, id ASC'
         ));
     }
-    
+
     /**
      * Add a comment to a visible post.
      *
@@ -61,6 +69,7 @@ class comment_service {
      * @param string $content Text content of the comment.
      * @return \local_chuspasocial\local\persistent\comment The created comment.
      * @throws \moodle_exception If the post is not visible or the user cannot comment.
+     * @throws \invalid_parameter_exception If the content is empty or only whitespace.
      */
     public static function add_comment(int $postid, string $content): \local_chuspasocial\local\persistent\comment {
         global $USER;
@@ -84,6 +93,11 @@ class comment_service {
         // Check whether the current user can comment.
         require_capability('local/chuspasocial:comment', $context);
 
+        // Reject empty comments or comments made only of whitespace.
+        if (trim($content) === '') {
+            throw new \invalid_parameter_exception('The comment content cannot be empty');
+        }
+
         // Create and return the comment.
         $comment = new \local_chuspasocial\local\persistent\comment(0, (object) [
             'postid' => $postid,
@@ -105,5 +119,30 @@ class comment_service {
         ])->trigger();
 
         return $comment;
+    }
+
+    /**
+     * Delete a comment if the user is its author or a moderator.
+     *
+     * @param int $commentid ID of the comment to delete.
+     * @return void
+     * @throws \moodle_exception If the user cannot delete the comment.
+     */
+    public static function delete_comment(int $commentid): void {
+        global $USER;
+
+        $comment = new \local_chuspasocial\local\persistent\comment($commentid);
+
+        $isauthor = (int) $comment->get('userid') === (int) $USER->id;
+        $ismoderator = has_capability(
+            'local/chuspasocial:moderate',
+            \context_system::instance()
+        );
+
+        if (!$isauthor && !$ismoderator) {
+            throw new \moodle_exception('nopermissions', 'error', '', 'delete this comment');
+        }
+
+        $comment->delete();
     }
 }

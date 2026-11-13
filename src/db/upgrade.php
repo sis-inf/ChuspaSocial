@@ -51,5 +51,26 @@ function xmldb_local_chuspasocial_upgrade($oldversion): bool {
         upgrade_plugin_savepoint(true, 2026110400, 'local', 'chuspasocial');
     }
 
+    if ($oldversion < 2026111200) {
+        // Define field hidden to be added to local_chuspasocial_comment.
+        $table = new xmldb_table('local_chuspasocial_comment');
+        $field = new xmldb_field('hidden', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'timemodified');
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field hidden to be added to local_chuspasocial_listing.
+        $table = new xmldb_table('local_chuspasocial_listing');
+        $field = new xmldb_field('hidden', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'timemodified');
+
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Mark this version as completed.
+        upgrade_plugin_savepoint(true, 2026111200, 'local', 'chuspasocial');
+    }
+
     return true;
 }

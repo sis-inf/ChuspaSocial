@@ -86,8 +86,54 @@ if ($reports) {
             'post'
         );
 
+        // Load the reported item to show a safe summary and a link to its view.
+        $summary = null;
+        $itemurl = null;
+        if ($report->itemtype === 'post') {
+            $post = $DB->get_record('local_chuspasocial_post', ['id' => $report->itemid]);
+            if ($post) {
+                $summary = content_to_text($post->content, $post->contentformat);
+                $itemurl = $post->courseid
+                    ? new moodle_url('/local/chuspasocial/course.php', ['id' => $post->courseid])
+                    : new moodle_url('/local/chuspasocial/index.php');
+            }
+        } else if ($report->itemtype === 'comment') {
+            $comment = $DB->get_record('local_chuspasocial_comment', ['id' => $report->itemid]);
+            if ($comment) {
+                $summary = content_to_text($comment->content, $comment->contentformat);
+                $post = $DB->get_record('local_chuspasocial_post', ['id' => $comment->postid]);
+                if ($post) {
+                    $itemurl = $post->courseid
+                        ? new moodle_url('/local/chuspasocial/course.php', ['id' => $post->courseid])
+                        : new moodle_url('/local/chuspasocial/index.php');
+                }
+            }
+        } else if ($report->itemtype === 'listing') {
+            $listing = $DB->get_record('local_chuspasocial_listing', ['id' => $report->itemid]);
+            if ($listing) {
+                $summary = $listing->title;
+                $itemurl = new moodle_url('/local/chuspasocial/listing.php', ['id' => $listing->id]);
+            }
+        }
+
+        $contentcell = s($report->itemtype) . ' #' . $report->itemid;
+        if ($summary === null) {
+            $contentcell .= html_writer::div(
+                get_string('reportedcontentmissing', 'local_chuspasocial'),
+                'text-muted'
+            );
+        } else {
+            $contentcell .= html_writer::div(s(shorten_text($summary, 100)));
+            if ($itemurl) {
+                $contentcell .= html_writer::link(
+                    $itemurl,
+                    get_string('viewreportedcontent', 'local_chuspasocial')
+                );
+            }
+        }
+
         $table->data[] = [
-            s($report->itemtype) . ' #' . $report->itemid,
+            $contentcell,
             s($report->reason),
             $reportername,
             userdate($report->timecreated),

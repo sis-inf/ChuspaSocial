@@ -24,7 +24,12 @@
 
 require_once(__DIR__ . '/../../config.php');
 
+use local_chuspasocial\local\follow_service;
+
 $id = required_param('id', PARAM_INT);
+$list = optional_param('list', '', PARAM_ALPHA);
+$page = max(0, optional_param('page', 0, PARAM_INT));
+$perpage = 20;
 
 require_login();
 
@@ -80,10 +85,54 @@ echo $OUTPUT->header();
 
 echo $OUTPUT->user_picture($user, ['size' => 100, 'link' => false]);
 echo html_writer::tag('h2', s(fullname($user)));
+// The counters link to the lists of followers and followed users.
+$profileurl = new moodle_url('/local/chuspasocial/profile.php', ['id' => $id]);
 echo html_writer::div(
-    get_string('followers', 'local_chuspasocial') . ': ' . $followers . ' · ' .
-    get_string('following', 'local_chuspasocial') . ': ' . $following
+    html_writer::link(
+        new moodle_url($profileurl, ['list' => 'followers']),
+        get_string('followers', 'local_chuspasocial') . ': ' . $followers
+    ) . ' · ' .
+    html_writer::link(
+        new moodle_url($profileurl, ['list' => 'following']),
+        get_string('following', 'local_chuspasocial') . ': ' . $following
+    )
 );
+
+// Paginated list of followers or followed users (deleted users are filtered by the service).
+if ($list === 'followers' || $list === 'following') {
+    if ($list === 'followers') {
+        $users = follow_service::get_followers($id, $page, $perpage);
+        $total = $followers;
+    } else {
+        $users = follow_service::get_following($id, $page, $perpage);
+        $total = $following;
+    }
+
+    echo $OUTPUT->heading(get_string($list, 'local_chuspasocial'), 3);
+
+    if ($users) {
+        echo html_writer::start_tag('ul', ['class' => 'list-unstyled local-chuspasocial-follow-list']);
+        foreach ($users as $listuser) {
+            $image = html_writer::empty_tag('img', [
+                'src' => $listuser['profileimageurl'],
+                'class' => 'rounded-circle mr-2',
+                'width' => 35,
+                'height' => 35,
+                'alt' => '',
+            ]);
+            $link = html_writer::link(
+                new moodle_url('/local/chuspasocial/profile.php', ['id' => $listuser['id']]),
+                s($listuser['fullname'])
+            );
+            echo html_writer::tag('li', $image . $link, ['class' => 'mb-2']);
+        }
+        echo html_writer::end_tag('ul');
+    } else {
+        echo $OUTPUT->notification(get_string('nothingtodisplay'), \core\output\notification::NOTIFY_INFO);
+    }
+
+    echo $OUTPUT->paging_bar($total, $page, $perpage, new moodle_url($profileurl, ['list' => $list]));
+}
 
 foreach ($posts as $post) {
     echo html_writer::start_div('local-chuspasocial-post');

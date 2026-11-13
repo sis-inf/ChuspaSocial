@@ -42,6 +42,7 @@ $PAGE->set_url(new moodle_url('/local/chuspasocial/index.php'));
 $PAGE->set_title(get_string('pluginname', 'local_chuspasocial'));
 $PAGE->set_heading(get_string('pluginname', 'local_chuspasocial'));
 $PAGE->requires->js_call_amd('local_chuspasocial/report', 'init');
+$PAGE->requires->js_call_amd('local_chuspasocial/wall', 'init');
 
 // Display the form only to users allowed to publish.
 $canpost = has_capability('local/chuspasocial:post', $context);
@@ -101,6 +102,12 @@ foreach ($records as $record) {
     // The post template uses authorname and isannouncement.
     $data['authorname'] = $data['authorfullname'];
     $data['isannouncement'] = ($record->type === post::TYPE_ANNOUNCEMENT);
+
+    // Edited mark and edit link (only for the author).
+    $data['edited'] = (int) $record->timemodified > (int) $record->timecreated;
+    if (!empty($data['canedit'])) {
+        $data['editurl'] = (new moodle_url('/local/chuspasocial/post_edit.php', ['id' => $record->id]))->out(false);
+    }
 
     $posts[] = $data;
 }

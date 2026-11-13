@@ -29,7 +29,7 @@ use core\message\message;
 use core_user;
 use invalid_parameter_exception;
 use moodle_exception;
-
+use local_chuspasocial\local\persistent\report;
 /**
  * Service to create content reports and notify the moderators.
  *
@@ -83,7 +83,7 @@ class report_service {
             'itemid' => $itemid,
             'reporterid' => $USER->id,
             'reason' => $reason,
-            'status' => 'open',
+            'status' => report::STATUS_PENDING,
             'timecreated' => time(),
         ];
 
@@ -151,13 +151,17 @@ class report_service {
 
         $transaction = $DB->start_delegated_transaction();
         try {
-            $report->status = 'resolved';
+            $report->status = report::STATUS_ACTIONED;
             $report->resolvedby = $USER->id;
             $report->timeresolved = time();
             $DB->update_record('local_chuspasocial_report', $report);
 
             if ($report->itemtype === 'post') {
                 $DB->set_field('local_chuspasocial_post', 'hidden', 1, ['id' => $report->itemid]);
+            } else if ($report->itemtype === 'comment') {
+                $DB->set_field('local_chuspasocial_comment', 'hidden', 1, ['id' => $report->itemid]);
+            } else if ($report->itemtype === 'listing') {
+                $DB->set_field('local_chuspasocial_listing', 'hidden', 1, ['id' => $report->itemid]);
             }
             $transaction->allow_commit();
         } catch (\Throwable $e) {

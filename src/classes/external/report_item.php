@@ -125,11 +125,13 @@ class report_item extends external_api {
             }
         }
 
-        report_service::create_report(
-            $params['itemtype'],
-            (int) $params['itemid'],
-            $params['reason']
-        );
+        $data = new \stdClass();
+        $data->userid = (int) $USER->id;
+        $data->itemtype = $params['itemtype'];
+        $data->itemid = (int) $params['itemid'];
+        $data->reason = $params['reason'];
+
+        report_service::create_report($data);
 
         return ['status' => true];
     }
